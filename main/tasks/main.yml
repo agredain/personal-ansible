@@ -1,13 +1,6 @@
 ---
 # tasks file for main
 
-# Other repositories
-- name: Extra Repositories
-  apt_repository:
-    repo: "{{ item }}"
-  with_items:
-    - ppa:webupd8team/java # Repositorio de Oracle Java
-
 - name: Update all packages to the latest version
   apt:
     upgrade: dist
@@ -33,5 +26,5 @@
     - fish # Interprete de comandos supermolón
     - ncdu # Folder statiscic in terminal
 
-# echo tmpfs /tmp tmpfs noatime,nodiratime,nodev,nosuid,mode=1777,defaults 0 0 >> /etc/fstab
-# echo tmpfs /var/tmp tmpfs noatime,nodiratime,nodev,nosuid,mode=1777,defaults 0 0 >> /etc/fstab
+- name: Set Fish as default Interpreter
+  shell: chsh -s `which fish`
