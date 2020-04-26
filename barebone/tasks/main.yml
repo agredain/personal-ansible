@@ -48,7 +48,3 @@
     - kodi-peripheral-joystick
     - kodi-vfs-*
   become: yes
-
-- name: Install DockStarter
-  shell: bash -c "$(curl -fsSL https://get.dockstarter.com)"
-  become: no

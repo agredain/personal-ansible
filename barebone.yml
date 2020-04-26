@@ -1,3 +1,4 @@
 - hosts: barebone
   roles:
     - barebone
+    - dockstarter
