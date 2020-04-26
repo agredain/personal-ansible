@@ -1,0 +1,54 @@
+---
+# tasks file for barebone
+
+# Other repositories
+- name: Extra Repositories
+  apt_repository:
+    repo: "{{ item }}"
+  with_items:
+    - ppa:team-xbmc/ppa
+  become: yes
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+  become: yes
+
+# Extra packages
+- name: Install Extras Packages
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - ubuntu-restricted-extras
+    - x264
+    - x265
+    - exfat-fuse 
+    - exfat-utils
+    - rar 
+    - unrar
+    - zip
+    - unzip
+    - curl
+    - git
+    - lm-sensors # lm-sensors, herramientas para leer la información de los sensores de temperatura, voltaje y ventiladores
+    - preload # Carga las aplicaciones mas rápidamente.
+    - ncdu
+  become: yes
+    
+# Extra packages
+- name: Install Kodi Packages
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - kodi
+    - kodi-screensaver*
+    - kodi-game-libretro*
+    - kodi-inputstream-adaptive
+    - kodi-inputstream-rtmp
+    - kodi-peripheral-joystick
+    - kodi-vfs-*
+  become: yes
+
+- name: Install DockStarter
+  shell: bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  become: no
