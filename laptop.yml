@@ -4,4 +4,21 @@
   # ask-become-pass: yes
 
   roles:
+    - main
     - laptop
+    - role: gantsign.visual-studio-code
+      users:
+        - username: "{{ lookup('env','USER') }}"
+          visual_studio_code_extensions:
+            - vscoss.vscode-ansible
+            - ms-vscode.cpptools
+            - ms-python.python
+            - jmmeessen.jenkins-declarative-support
+            - ms-azuretools.vscode-docker
+            - janjoerke.jenkins-pipeline-linter-connector
+            - aaron-bond.better-comments
+            - lacroixdavid1.vscode-format-context-menu
+            - christian-kohler.path-intellisense
+            - alefragnani.Bookmarks
+            - CoenraadS.bracket-pair-colorizer-2
+            
