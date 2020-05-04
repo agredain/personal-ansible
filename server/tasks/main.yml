@@ -1,0 +1,17 @@
+---
+# tasks file for server
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+
+# Extra packages
+- name: Install Extras Packages
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - cockpit
+    - cockpit-docker
+    - cockpit-networkmanager
+    - cockpit-systemd
+    

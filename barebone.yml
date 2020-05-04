@@ -5,5 +5,7 @@
   # ask-become-pass: yes
 
   roles:
+    - main
+    - server
     - barebone
     - dockstarter
