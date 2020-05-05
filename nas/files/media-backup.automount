@@ -1,0 +1,8 @@
+[Unit]
+Description=Automount Backup
+
+[Automount]
+Where=/media/backup
+
+[Install]
+WantedBy=multi-user.target

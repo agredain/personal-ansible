@@ -14,4 +14,40 @@
     - cockpit-docker
     - cockpit-networkmanager
     - cockpit-systemd
+
+- name: Add Backup Mount Daemon
+  copy:
+    src: "{{ role_path }}/files/media-backup.mount"
+    dest: /etc/systemd/system/media-backup.mount
+    force: no
+
+- name: Enable Backup Mount Daemon
+  systemd:
+    name: media-backup.mount
+    enabled: yes
+    masked: no
+
+- name: Add Backup Automount Daemon
+  copy:
+    src: "{{ role_path }}/files/media-backup.automount"
+    dest: /etc/systemd/system/media-backup.automount
+    force: no
+
+- name: Enable Backup Automount Daemon
+  systemd:
+    name: media-backup.automount
+    enabled: yes
+    masked: no
+
+- name: Add Backup Script Daemon
+  copy:
+    src: "{{ role_path }}/files/backup-script.service"
+    dest: /etc/systemd/system/backup-script.service
+    force: no
+
+- name: Enable Backup Script Daemon
+  systemd:
+    name: backup-script.service
+    enabled: yes
+    masked: no
     
