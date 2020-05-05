@@ -13,7 +13,6 @@
 # https://forum.kde.org/viewtopic.php?f=66&t=82348
 # qdbus org.kde.kglobalaccel /component/kwin invokeShortcut 'ShowDesktopGrid'
 # https://github.com/oh-my-fish/oh-my-fish/blob/master/docs/Themes.md#bobthefish
-# https://github.com/nicolargo/glances
 
 
 # Other repositories
@@ -87,7 +86,6 @@
     url: https://dl-ssl.google.com/linux/linux_signing_key.pub
     state: present
 
-
 - name: Chrome repository
   apt_repository:
     repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
@@ -98,21 +96,6 @@
   apt:
     name: google-chrome-stable
 
-# Google Music Manager
-- name: Google Music Manager repo key
-  apt_key:
-    url: https://dl-ssl.google.com/linux/linux_signing_key.pub
-    state: present
-
-- apt_repository:
-    repo: deb [arch=amd64]  http://dl.google.com/linux/musicmanager/deb/ stable main
-    state: present
-    filename: google-musicmanager
-
-- name: Install Google Music Manager
-  apt:
-    name: google-musicmanager-beta
-    
 # Insync
 - name: Insync
   apt_key:
@@ -120,7 +103,7 @@
     id: ACCAF35C
 
 - apt_repository:
-    repo: deb http://apt.insync.io//ubuntu bionic non-free contrib
+    repo: deb http://apt.insync.io//ubuntu {{ansible_lsb.codename}} non-free contrib
     state: present
     filename: insync
 
@@ -144,23 +127,23 @@
     name: enpass
     
 # Lutris
-- name: Lutris repo keyserver
-  apt_key: 
-    url: https://download.opensuse.org/repositories/home:/strycore/xUbuntu_18.04/Release.key
-    state: present
+# - name: Lutris repo keyserver
+#   apt_key: 
+#     url: https://download.opensuse.org/repositories/home:/strycore/xUbuntu_{{ansible_lsb.release}}/Release.key
+#     state: present
    
-- apt_repository:
-    repo: deb http://download.opensuse.org/repositories/home:/strycore/xUbuntu_18.04/ ./
-    state: present
-    filename: lutris
+# - apt_repository:
+#     repo: deb http://download.opensuse.org/repositories/home:/strycore/xUbuntu_{{ansible_lsb.release}}/ ./
+#     state: present
+#     filename: lutris
 
-- name: Install Lutris
-  apt:
-    name: "{{ packages }}"
-  vars:
-    packages:
-    - lutris
-    - steam
+# - name: Install Lutris
+#   apt:
+#     name: "{{ packages }}"
+#   vars:
+#     packages:
+#     - lutris
+#     - steam
     
 # Typora
 - name: Typora repo key
