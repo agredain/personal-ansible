@@ -51,3 +51,8 @@
     enabled: yes
     masked: no
     
+- name: Clean Agredain photos daily
+  cron:
+    name: "Clean Nextcloud photos"
+    special_time: daily
+    job: "/media/data/scripts/clean_photos.sh"
