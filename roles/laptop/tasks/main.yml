@@ -20,6 +20,7 @@
   apt_repository:
     repo: "{{ item }}"
   with_items:
+    - ppa:mmstick76/alacritty
     - ppa:atareao/atareao # Repositorio atareao/atareao, para varias aplicaciones: Touchpad-Indicator, Pomodoro Indicator, 2gi, My Weather Indicator. http://www.atareao.es/
     - ppa:peterlevi/ppa # Repositorio peterlevi, Variety, aplicación que cambia el fondo de escritorio de forma regular.
     - ppa:webupd8team/y-ppa-manager # Repositorio webupd8team, y-ppa-manager, herramienta para gestionar los PPAs.
@@ -47,6 +48,7 @@
   apt:
     name: "{{ item }}"
   with_items:
+    - alacritty # Superfast terminal application
     # - anki # Aplicación de tarjetas para reforzar la memoria
     - bleachbit # Installar Bleachbit, el Ccleaner de linux
     - breaktimer # Pomodoro application # TODO check this (if not snap)
@@ -80,7 +82,6 @@
     - xbindkeys
     - xserver-xorg-input-synaptics # Para hacer funcionar el Touchpad
     - zeal # Navegador de documentación para desarrolladores
-    
     
 # Google Chrome
 - name: Chrome repo key
@@ -180,6 +181,10 @@
 #     name: mackup
 #     state: present
 #     classic
+
+- name: Get Alacritty default configuration
+  shell: mkdir -p ~/.config/alacritty; wget https://raw.githubusercontent.com/alacritty/alacritty/master/alacritty.yml -O ~/.config/alacritty/alacritty.yml
+  # check for https://www.atareao.es/software/utilidades/emulador-de-terminal-mas-rapido/
 
 - name: Install and update Joplin
   shell: wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
