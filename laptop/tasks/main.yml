@@ -47,38 +47,40 @@
   apt:
     name: "{{ item }}"
   with_items:
-    - x264
-    - x265
-    - hplip
-    - picard # Aplicación para análisis y reconocimiento de álbumnes de música
+    # - anki # Aplicación de tarjetas para reforzar la memoria
+    - bleachbit # Installar Bleachbit, el Ccleaner de linux
+    - breaktimer # Pomodoro application # TODO check this (if not snap)
+    - browser-plugin-vlc 
     - calibre # Calibre, gestor y organizador de libros electrónicos, conversor de libros electrónicos e-book
-    - gparted # GParted es un editor de particiones 
-    - simple-scan
+    - filelight # Intallar Filelight, aplicación para ver el espacio ocupado por archivos y directorios de forma visual
     - fslint # Installar FSlint (FileSystem Lint) para buscar y eliminar archivos duplicados
+    - gparted # GParted es un editor de particiones 
     - hardinfo # HardInfo, interfaz gráfica que muestra información del sistema, memoria, procesador, kernell, entre otras cosas
+    - hplip
+    - ipython # Interprete de python
+    # - jdownloader-installer # Jdownloader, gestor de descargas
+    - krename
+    - kde-config-systemd # https://www.muylinux.com/2016/08/01/acelerar-apagado-systemd/
+    - latte-dock # Dock para Plasma supermolón
+    # - libvlccore8
+    - libvlc5 
+    - nextcloud-client
     - pdfmod # pdfmod, editor PDF, modificar documentos PDF, permitiéndote reordenar, girar, quitar, añadir, combinar documentos arrastrándolos..
     - pdfshuffler # PDF-Shuffler, aplicación gráfica interactiva e intuitiva que permite fusionar, dividir y volver a organizar las páginas de los documentos PDF
-    - sysinfo # Sysinfo, herramienta gráfica para mostrar información sobre la configuración del hardware
-    - vlc # VLC, reproductor multimedia archivos multimedia, así como DVD, protocolos Audio CD, VCD y streaming diversos..
-    - browser-plugin-vlc 
-    - libvlc5 
-    # - libvlccore8
-    - bleachbit # Installar Bleachbit, el Ccleaner de linux
-    - filelight # Intallar Filelight, aplicación para ver el espacio ocupado por archivos y directorios de forma visual
-    - variety # Variety, aplicación que cambia el fondo de escritorio de forma regular, el uso de imágenes especificadas por el usuario o descargados automáticamente.
-    # - anki # Aplicación de tarjetas para reforzar la memoria
-    - latte-dock # Dock para Plasma supermolón
-    # - jdownloader-installer # Jdownloader, gestor de descargas
-    - ipython # Interprete de python
-    - retext # Installar Retext para editar y visualizar markdown
-    - krename
-    - xbindkeys
-    - zeal # Navegador de documentación para desarrolladores
-    - kde-config-systemd # https://www.muylinux.com/2016/08/01/acelerar-apagado-systemd/
+    - picard # Aplicación para análisis y reconocimiento de álbumnes de música
     - pinta # Paint equivalente
-    - xserver-xorg-input-synaptics # Para hacer funcionar el Touchpad
+    - retext # Installar Retext para editar y visualizar markdown
     - stacer # Software de Optimización y Monitoreo de Sistemas Linux
-    - nextcloud-client
+    - simple-scan
+    - sysinfo # Sysinfo, herramienta gráfica para mostrar información sobre la configuración del hardware
+    - variety # Variety, aplicación que cambia el fondo de escritorio de forma regular, el uso de imágenes especificadas por el usuario o descargados automáticamente.
+    - vlc # VLC, reproductor multimedia archivos multimedia, así como DVD, protocolos Audio CD, VCD y streaming diversos..
+    - x264
+    - x265
+    - xbindkeys
+    - xserver-xorg-input-synaptics # Para hacer funcionar el Touchpad
+    - zeal # Navegador de documentación para desarrolladores
+    
     
 # Google Chrome
 - name: Chrome repo key
