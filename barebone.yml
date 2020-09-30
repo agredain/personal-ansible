@@ -1,8 +1,5 @@
 - hosts: barebone
-  connection: remote
-  remote_user: agredain
   become: yes
-  # ask-become-pass: yes
 
   roles:
     - main

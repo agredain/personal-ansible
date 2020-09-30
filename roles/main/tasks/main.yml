@@ -8,8 +8,7 @@
 # Extra packages
 - name: Install Extras Packages
   apt:
-    name: "{{ item }}"
-  with_items:
+    name:
     - ubuntu-restricted-extras
     - exfat-fuse 
     - exfat-utils
@@ -27,4 +26,4 @@
     - ncdu # Folder statiscic in terminal
 
 - name: Set Fish as default Interpreter
-  shell: chsh -s `which fish`
+  command: chsh -s 'which fish'
