@@ -16,6 +16,7 @@
     - unrar
     - zip
     - unzip
+    - curl
     - lm-sensors # lm-sensors, herramientas para leer la información de los sensores de temperatura, voltaje y ventiladores
     - microcode.ctl # Microcódigo en procesadores Intel
     - rmlint # Remove duplicate files by hash

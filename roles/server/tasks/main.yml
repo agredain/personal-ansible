@@ -8,8 +8,7 @@
 # Extra packages
 - name: Install Extras Packages
   apt:
-    name: "{{ item }}"
-  with_items:
+    name:
     - cockpit
     - cockpit-docker
     - cockpit-networkmanager

@@ -2,44 +2,26 @@
 # tasks file for barebone
 
 # Other repositories
-- name: Extra Repositories
+- name: Add Kodi Repository
   apt_repository:
-    repo: "{{ item }}"
-  with_items:
-    - ppa:team-xbmc/ppa
-  become: yes
+    repo: ppa:team-xbmc/ppa
+    state: present
 
 - name: Update all packages to the latest version
   apt:
     upgrade: dist
-  become: yes
 
 # Extra packages
 - name: Install Extras Packages
   apt:
-    name: "{{ item }}"
-  with_items:
-    - ubuntu-restricted-extras
+    name:
     - x264
     - x265
-    - exfat-fuse 
-    - exfat-utils
-    - rar 
-    - unrar
-    - zip
-    - unzip
-    - curl
-    - git
-    - lm-sensors # lm-sensors, herramientas para leer la información de los sensores de temperatura, voltaje y ventiladores
-    - preload # Carga las aplicaciones mas rápidamente.
-    - ncdu
-  become: yes
     
 # Extra packages
 - name: Install Kodi Packages
   apt:
-    name: "{{ item }}"
-  with_items:
+    name:
     - kodi
     - kodi-screensaver*
     - kodi-game-libretro*
@@ -47,4 +29,3 @@
     - kodi-inputstream-rtmp
     - kodi-peripheral-joystick
     - kodi-vfs-*
-  become: yes
