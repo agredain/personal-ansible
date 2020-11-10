@@ -1,0 +1,7 @@
+---
+# tasks file for develop
+
+- name: Install CppCheck
+  apt:
+    name:
+    - cppcheck
