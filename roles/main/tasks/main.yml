@@ -26,5 +26,5 @@
     - fish # Interprete de comandos supermolón
     - ncdu # Folder statiscic in terminal
 
-- name: Set Fish as default Interpreter
-  command: chsh -s 'which fish'
+# - name: Set Fish as default Interpreter
+#   command: chsh -s 'which fish'

@@ -5,13 +5,63 @@
   apt:
     upgrade: dist
 
-# Extra packages
-- name: Install Extras Packages
+- name: Install Cockpit Packages
   apt:
     name:
     - cockpit
-    - cockpit-docker
+#    - cockpit-docker
     - cockpit-networkmanager
     - cockpit-systemd
-    - borgbackup
-    
+
+- name: Install Borgbackup Package
+  apt:
+    name: borgbackup
+
+- name: Install Unattended Upgrades
+  apt:
+    name: unattended-upgrades
+
+- name: Config Unattended Email
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '//Unattended-Upgrade::Mail "";'
+    line: 'Unattended-Upgrade::Mail "agredain@gmail.com";'
+    state: present
+
+- name: Config Unattended MailReport
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '//Unattended-Upgrade::MailReport "on-change";'
+    line: 'Unattended-Upgrade::MailReport "on-change";'
+    state: present
+
+- name: Config Unattended Remove-Unused-Kernel-Packages
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '//Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";'
+    line: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";'
+    state: present
+
+- name: Config Unattended Remove-New-Unused-Dependencies
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '//Unattended-Upgrade::Remove-New-Unused-Dependencies "true";'
+    line: 'Unattended-Upgrade::Remove-New-Unused-Dependencies "true";'
+    state: present
+
+- name: Config Unattended Remove-Unused-Dependencies
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '//Unattended-Upgrade::Remove-Unused-Dependencies "false";'
+    line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";'
+    state: present
+
+- name: Config Unattended Cache
+  blockinfile:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    block: |
+      APT::Periodic::Download-Upgradeable-Packages "1";
+      APT::Periodic::AutocleanInterval "7";
+
+- name: Enable Unattended Upgrades // MANUAL
+  command: dpkg-reconfigure -plow unattended-upgrades -f noninteractive
