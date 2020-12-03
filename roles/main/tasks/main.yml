@@ -25,6 +25,12 @@
     - git
     - fish # Interprete de comandos supermolón
     - ncdu # Folder statiscic in terminal
+    - most # Colorfull manpages
 
 # - name: Set Fish as default Interpreter
 #   command: chsh -s 'which fish'
+
+- name: Make most permanent
+  lineinfile:
+    path: ~/.bashrc
+    line: export PAGER="most"
