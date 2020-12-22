@@ -5,41 +5,24 @@
   apt:
     upgrade: dist
 
-- name: Add Backup Mount Daemon
+- name: Add General Backup Daemon Files
   copy:
-    src: "{{ role_path }}/files/media-backup.mount"
-    dest: /etc/systemd/system/media-backup.mount
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
     force: no
+  loop:
+  - media-backup.mount
+  - media-backup.automount
+  - backup-script.service
 
-- name: Enable Backup Mount Daemon
+- name: Enable General Backup Daemon
   systemd:
-    name: media-backup.mount
+    name: "{{ item }}"
     enabled: yes
     masked: no
-
-- name: Add Backup Automount Daemon
-  copy:
-    src: "{{ role_path }}/files/media-backup.automount"
-    dest: /etc/systemd/system/media-backup.automount
-    force: no
-
-- name: Enable Backup Automount Daemon
-  systemd:
-    name: media-backup.automount
-    enabled: yes
-    masked: no
-
-- name: Add Backup Script Daemon
-  copy:
-    src: "{{ role_path }}/files/backup-script.service"
-    dest: /etc/systemd/system/backup-script.service
-    force: no
-
-- name: Enable Backup Script Daemon
-  systemd:
-    name: backup-script.service
-    enabled: yes
-    masked: no
+  loop:
+  - media-backup.automount
+  - backup-script.service
     
 - name: Clean Agredain photos daily
   cron:
