@@ -17,15 +17,16 @@
     - zip
     - unzip
     - curl
-    - lm-sensors # lm-sensors, herramientas para leer la información de los sensores de temperatura, voltaje y ventiladores
+    - lm-sensors    # Herramientas para leer la información de los sensores de temperatura, voltaje y ventiladores
     - microcode.ctl # Microcódigo en procesadores Intel
-    - rmlint # Remove duplicate files by hash
-    - preload # Speed application load
-    - prelink # Se encarga de preenlazar las librerías que necesitan las aplicaciones que utilizamos, reduciendo así los tiempos de apertura
+    - rmlint        # Remove duplicate files by hash
+    - preload       # Speed application load
+    - prelink       # Se encarga de preenlazar las librerías que necesitan las aplicaciones que utilizamos, reduciendo así los tiempos de apertura
     - git
-    - fish # Interprete de comandos supermolón
-    - ncdu # Folder statiscic in terminal
-    - most # Colorfull manpages
+    - fish          # Interprete de comandos supermolón
+    - ncdu          # Folder statistic in terminal
+    - most          # Colorful manpages
+    . bleachbit     # Remove unnecessary system files 
 
 # - name: Set Fish as default Interpreter
 #   command: chsh -s 'which fish'
