@@ -26,4 +26,5 @@
             - ms-vscode-remote.remote-containers
             - ms-vscode-remote.remote-ssh
             - IBM.output-colorizer
+            - shd101wyy.markdown-preview-enhanced
             
