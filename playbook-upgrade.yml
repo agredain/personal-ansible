@@ -1,0 +1,33 @@
+- hosts: all
+  become: yes
+
+  tasks:
+  - name: Apt Update
+    apt:
+      update-cache: yes
+
+  - name: List off upgradable packages
+    command: apt list --upgradable
+    register: upgradable_std
+
+  - set_fact:
+      upgradable: "{{ upgradable_std.stdout_lines[1:] }}"
+
+  # - name: Aptitude must be present
+  #   become: True
+  #   apt:
+  #     name: aptitude
+
+  # - name: Check for upgradeable
+  #   apt:
+  #     upgrade: dist
+  #   check_mode: True
+  #   register: upgradeable
+
+  - name: Show me
+    debug:
+      var: upgradable
+
+  - name: Exterminate mankind
+    pause:
+      prompt: Please confirm you want to exterminate mankind! Press return to continue. Press Ctrl+c and then "a" to abort

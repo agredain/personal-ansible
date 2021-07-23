@@ -16,6 +16,7 @@
             - jmmeessen.jenkins-declarative-support
             - ms-azuretools.vscode-docker
             - janjoerke.jenkins-pipeline-linter-connector
+            - tomoki1207.pdf
             - aaron-bond.better-comments
             - lacroixdavid1.vscode-format-context-menu
             - christian-kohler.path-intellisense
@@ -27,4 +28,5 @@
             - ms-vscode-remote.remote-ssh
             - IBM.output-colorizer
             - shd101wyy.markdown-preview-enhanced
+            - vscodevim.vim
             
