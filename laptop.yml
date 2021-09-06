@@ -10,7 +10,7 @@
       users:
         - username: "{{ lookup('env','USER') }}"
           visual_studio_code_extensions:
-            - vscoss.vscode-ansible
+            #- vscoss.vscode-ansible
             - ms-vscode.cpptools
             - ms-python.python
             - jmmeessen.jenkins-declarative-support

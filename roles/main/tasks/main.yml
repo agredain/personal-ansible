@@ -26,7 +26,7 @@
     - fish          # Interprete de comandos supermolón
     - ncdu          # Folder statistic in terminal
     - most          # Colorful manpages
-    . bleachbit     # Remove unnecessary system files 
+    - bleachbit     # Remove unnecessary system files
 
 # - name: Set Fish as default Interpreter
 #   command: chsh -s 'which fish'

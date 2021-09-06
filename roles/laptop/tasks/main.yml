@@ -19,17 +19,17 @@
 - name: Extra Repositories
   apt_repository:
     repo: "{{ item }}"
-  with_items:
+  loop  :
     - ppa:atareao/atareao # Repositorio atareao/atareao, para varias aplicaciones: Touchpad-Indicator, Pomodoro Indicator, 2gi, My Weather Indicator. http://www.atareao.es/
-    - ppa:peterlevi/ppa # Repositorio peterlevi, Variety, aplicación que cambia el fondo de escritorio de forma regular.
+    #- ppa:peterlevi/ppa # Repositorio peterlevi, Variety, aplicación que cambia el fondo de escritorio de forma regular.
     - ppa:webupd8team/y-ppa-manager # Repositorio webupd8team, y-ppa-manager, herramienta para gestionar los PPAs.
     # - ppa:jd-team/jdownloader # Repositorio de jdownloader
     # - ppa:musicbrainz-developers/stable # Repositorio de musicbrainz picard
-    - ppa:webupd8team/java # Repositorio de Oracle Java
-    - ppa:rikmills/latte-dock # Dock para plasma
+    #- ppa:webupd8team/java # Repositorio de Oracle Java
+    #- ppa:rikmills/latte-dock # Dock para plasma
     - ppa:libreoffice/ppa # LibreOffice PPA
-    - ppa:zeal-developers/ppa
-    - ppa:oguzhaninan/stacer # Stacer PPA
+    #- ppa:zeal-developers/ppa
+    #- ppa:oguzhaninan/stacer # Stacer PPA
     - ppa:nextcloud-devs/client
 
 - name: Add Microsoft Extra fonts to all apps
@@ -45,19 +45,18 @@
 # Extra packages
 - name: Install Extras Packages
   apt:
-    name: "{{ item }}"
-  with_items:
+    name:
     # - anki # Aplicación de tarjetas para reforzar la memoria
     - bleachbit # Installar Bleachbit, el Ccleaner de linux
-    - breaktimer # Pomodoro application # TODO check this (if not snap)
-    - browser-plugin-vlc 
+    #- breaktimer # Pomodoro application # TODO check this (if not snap)
+    #- browser-plugin-vlc
     - calibre # Calibre, gestor y organizador de libros electrónicos, conversor de libros electrónicos e-book
     - filelight # Intallar Filelight, aplicación para ver el espacio ocupado por archivos y directorios de forma visual
-    - fslint # Installar FSlint (FileSystem Lint) para buscar y eliminar archivos duplicados
+    #- fslint # Installar FSlint (FileSystem Lint) para buscar y eliminar archivos duplicados
     - gparted # GParted es un editor de particiones 
     - hardinfo # HardInfo, interfaz gráfica que muestra información del sistema, memoria, procesador, kernell, entre otras cosas
     - hplip
-    - ipython # Interprete de python
+    #- ipython # Interprete de python
     # - jdownloader-installer # Jdownloader, gestor de descargas
     - krename
     - kde-config-systemd # https://www.muylinux.com/2016/08/01/acelerar-apagado-systemd/
@@ -72,7 +71,7 @@
     - retext # Installar Retext para editar y visualizar markdown
     - stacer # Software de Optimización y Monitoreo de Sistemas Linux
     - simple-scan
-    - sysinfo # Sysinfo, herramienta gráfica para mostrar información sobre la configuración del hardware
+    #- sysinfo # Sysinfo, herramienta gráfica para mostrar información sobre la configuración del hardware
     - variety # Variety, aplicación que cambia el fondo de escritorio de forma regular, el uso de imágenes especificadas por el usuario o descargados automáticamente.
     - vlc # VLC, reproductor multimedia archivos multimedia, así como DVD, protocolos Audio CD, VCD y streaming diversos..
     - x264
@@ -82,51 +81,51 @@
     - zeal # Navegador de documentación para desarrolladores
     
     
-# Google Chrome
-- name: Chrome repo key
-  apt_key:
-    url: https://dl-ssl.google.com/linux/linux_signing_key.pub
-    state: present
+#Google Chrome
+#- name: Chrome repo key
+  #apt_key:
+    #url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+    #state: present
 
-- name: Chrome repository
-  apt_repository:
-    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
-    state: present
-    filename: google-chrome
+#- name: Chrome repository
+  #apt_repository:
+    #repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    #state: present
+    #filename: google-chrome
 
-- name: Install Chrome
-  apt:
-    name: google-chrome-stable
+#- name: Install Chrome
+  #apt:
+    #name: google-chrome-stable
 
 # Insync
-- name: Insync
-  apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: ACCAF35C
+#- name: Insync
+  #apt_key:
+    #keyserver: keyserver.ubuntu.com
+    #id: ACCAF35C
 
-- apt_repository:
-    repo: deb http://apt.insync.io//ubuntu {{ansible_lsb.codename}} non-free contrib
-    state: present
-    filename: insync
+#- apt_repository:
+    #repo: deb http://apt.insync.io//ubuntu {{ansible_lsb.codename}} non-free contrib
+    #state: present
+    #filename: insync
 
-- name: Install Insync
-  apt:
-    name: insync
+#- name: Install Insync
+  #apt:
+    #name: insync
     
-# Enpass
-- name: Enpass repo keyserver
-  apt_key: 
-    url: https://dl.sinew.in/keys/enpass-linux.key
-    state: present
+#Enpass
+#- name: Enpass repo keyserver
+  #apt_key:
+    #url: https://dl.sinew.in/keys/enpass-linux.key
+    #state: present
    
-- apt_repository:
-    repo: deb http://repo.sinew.in/ stable main
-    state: present
-    filename: enpass
+#- apt_repository:
+    #repo: deb http://repo.sinew.in/ stable main
+    #state: present
+    #filename: enpass
 
-- name: Install Enpass
-  apt:
-    name: enpass
+#- name: Install Enpass
+  #apt:
+    #name: enpass
     
 # Lutris
 # - name: Lutris repo keyserver
@@ -141,9 +140,7 @@
 
 # - name: Install Lutris
 #   apt:
-#     name: "{{ packages }}"
-#   vars:
-#     packages:
+#     name:
 #     - lutris
 #     - steam
     
@@ -181,11 +178,11 @@
 #     state: present
 #     classic
 
-- name: Install and update Joplin
-  shell: wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
+#- name: Install and update Joplin
+  #shell: wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
 
-- name: Install Oh my Fish
-  shell: curl -L https://get.oh-my.fish | fish
+#- name: Install Oh my Fish
+#  shell: curl -L https://get.oh-my.fish | fish
   # install https://github.com/abertsch/Menlo-for-Powerline/blob/master/Menlo%20for%20Powerline.ttf
   
   
