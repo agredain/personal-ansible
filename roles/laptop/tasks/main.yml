@@ -31,6 +31,7 @@
     #- ppa:zeal-developers/ppa
     #- ppa:oguzhaninan/stacer # Stacer PPA
     - ppa:nextcloud-devs/client
+    - ppa:appimagelauncher-team/stable  # Latest stable version of AppImageLauncher.
 
 - name: Add Microsoft Extra fonts to all apps
   shell: fc-cache -f -v
@@ -46,6 +47,7 @@
 - name: Install Extras Packages
   apt:
     name:
+    - appimagelauncher      # Integrate AppImages to your application launcher with one click, and manage, update and remove them from there.
     # - anki # Aplicación de tarjetas para reforzar la memoria
     - bleachbit # Installar Bleachbit, el Ccleaner de linux
     #- breaktimer # Pomodoro application # TODO check this (if not snap)
@@ -62,7 +64,8 @@
     - kde-config-systemd # https://www.muylinux.com/2016/08/01/acelerar-apagado-systemd/
     - latte-dock # Dock para Plasma supermolón
     # - libvlccore8
-    - libvlc5 
+    - libvlc5
+    - meld
     - nextcloud-client
     - pdfmod # pdfmod, editor PDF, modificar documentos PDF, permitiéndote reordenar, girar, quitar, añadir, combinar documentos arrastrándolos..
     - pdfshuffler # PDF-Shuffler, aplicación gráfica interactiva e intuitiva que permite fusionar, dividir y volver a organizar las páginas de los documentos PDF
@@ -73,6 +76,7 @@
     - simple-scan
     #- sysinfo # Sysinfo, herramienta gráfica para mostrar información sobre la configuración del hardware
     - variety # Variety, aplicación que cambia el fondo de escritorio de forma regular, el uso de imágenes especificadas por el usuario o descargados automáticamente.
+    - wakeonlan
     - vlc # VLC, reproductor multimedia archivos multimedia, así como DVD, protocolos Audio CD, VCD y streaming diversos..
     - x264
     - x265
@@ -188,3 +192,22 @@
   
 # echo tmpfs /tmp tmpfs noatime,nodiratime,nodev,nosuid,mode=1777,defaults 0 0 >> /etc/fstab
 # echo tmpfs /var/tmp tmpfs noatime,nodiratime,nodev,nosuid,mode=1777,defaults 0 0 >> /etc/fstab
+- name: Get version list of Chezmoi
+  uri: 
+    url: https://api.github.com/repos/twpayne/chezmoi/releases/latest
+    return_content: yes
+    body_format: json
+  register: chezmoi
+
+- name: Gather Chezmoi url
+  set_fact:
+    chezmoi_url: "{{ chezmoi.json | json_query(url_query) | first}}"
+  vars:
+    url_query: "assets[?contains(browser_download_url,'amd64.deb')].browser_download_url"
+
+- name: Install Chezmoi
+  apt:
+    deb: "{{ chezmoi_url }}"
+
+- name: Init Chezmoi
+  shell: chezmoi init https://github.com/agredain/dotfiles.git

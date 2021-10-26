@@ -17,6 +17,7 @@
     - zip
     - unzip
     - curl
+    - neofetch      # Neofetch displays an ASCII logo of your Linux distribution along with information related to your system in the terminal
     - lm-sensors    # Herramientas para leer la información de los sensores de temperatura, voltaje y ventiladores
     - microcode.ctl # Microcódigo en procesadores Intel
     - rmlint        # Remove duplicate files by hash
