@@ -6,9 +6,6 @@
 
 # TODO: Autofirma
 # https://www.opendesktop.org/p/1282623/
-# Station
-# Descargar e instalar MPLAB, ide de desarrollo de Microchip wget http://www.microchip.com/mplabx-ide-linux-installer -O /tmp/mplabx-ide-linux-installer.sh && sudo sh /tmp/mplabx-ide-linux-installer.sh -- --mode unattended
-# Dropbox https://www.dropbox.com/install-linux
 # https://freefilesync.org/
 # https://forum.kde.org/viewtopic.php?f=66&t=82348
 # qdbus org.kde.kglobalaccel /component/kwin invokeShortcut 'ShowDesktopGrid'
@@ -20,16 +17,13 @@
   apt_repository:
     repo: "{{ item }}"
   loop  :
-    - ppa:atareao/atareao # Repositorio atareao/atareao, para varias aplicaciones: Touchpad-Indicator, Pomodoro Indicator, 2gi, My Weather Indicator. http://www.atareao.es/
-    #- ppa:peterlevi/ppa # Repositorio peterlevi, Variety, aplicación que cambia el fondo de escritorio de forma regular.
-    - ppa:webupd8team/y-ppa-manager # Repositorio webupd8team, y-ppa-manager, herramienta para gestionar los PPAs.
-    # - ppa:jd-team/jdownloader # Repositorio de jdownloader
-    # - ppa:musicbrainz-developers/stable # Repositorio de musicbrainz picard
-    #- ppa:webupd8team/java # Repositorio de Oracle Java
-    #- ppa:rikmills/latte-dock # Dock para plasma
-    - ppa:libreoffice/ppa # LibreOffice PPA
+    - ppa:atareao/atareao               # Repositorio atareao/atareao, para varias aplicaciones: Touchpad-Indicator, Pomodoro Indicator, 2gi, My Weather Indicator. http://www.atareao.es/
+    #- ppa:peterlevi/ppa                # Repositorio peterlevi, Variety, aplicación que cambia el fondo de escritorio de forma regular.
+    - ppa:webupd8team/y-ppa-manager     # Repositorio webupd8team, y-ppa-manager, herramienta para gestionar los PPAs.
+    # - ppa:jd-team/jdownloader         # Repositorio de jdownloader
+    #- ppa:webupd8team/java             # Repositorio de Oracle Java
+    - ppa:libreoffice/ppa               # LibreOffice PPA
     #- ppa:zeal-developers/ppa
-    #- ppa:oguzhaninan/stacer # Stacer PPA
     - ppa:nextcloud-devs/client
     - ppa:appimagelauncher-team/stable  # Latest stable version of AppImageLauncher.
 
@@ -47,43 +41,40 @@
 - name: Install Extras Packages
   apt:
     name:
-    - appimagelauncher      # Integrate AppImages to your application launcher with one click, and manage, update and remove them from there.
+    - appimagelauncher              # Integrate AppImages to your application launcher with one click, and manage, update and remove them from there.
     # - anki # Aplicación de tarjetas para reforzar la memoria
-    - bleachbit # Installar Bleachbit, el Ccleaner de linux
-    #- breaktimer # Pomodoro application # TODO check this (if not snap)
-    #- browser-plugin-vlc
-    - calibre # Calibre, gestor y organizador de libros electrónicos, conversor de libros electrónicos e-book
-    - filelight # Intallar Filelight, aplicación para ver el espacio ocupado por archivos y directorios de forma visual
-    #- fslint # Installar FSlint (FileSystem Lint) para buscar y eliminar archivos duplicados
-    - gparted # GParted es un editor de particiones 
-    - hardinfo # HardInfo, interfaz gráfica que muestra información del sistema, memoria, procesador, kernell, entre otras cosas
+    - bleachbit                     # Installar Bleachbit, el Ccleaner de linux
+    - filelight                     # Intallar Filelight, aplicación para ver el espacio ocupado por archivos y directorios de forma visual
+    #- fslint                       # Installar FSlint (FileSystem Lint) para buscar y eliminar archivos duplicados
+    - gparted                       # GParted es un editor de particiones 
+    - hardinfo                      # HardInfo, interfaz gráfica que muestra información del sistema, memoria, procesador, kernell, entre otras cosas
     - hplip
-    #- ipython # Interprete de python
-    # - jdownloader-installer # Jdownloader, gestor de descargas
     - krename
-    - kde-config-systemd # https://www.muylinux.com/2016/08/01/acelerar-apagado-systemd/
-    - latte-dock # Dock para Plasma supermolón
-    # - libvlccore8
+    - kde-config-systemd            # https://www.muylinux.com/2016/08/01/acelerar-apagado-systemd/
+    - latte-dock                    # Dock para Plasma supermolón
     - libvlc5
     - meld
     - nextcloud-client
-    - pdfmod # pdfmod, editor PDF, modificar documentos PDF, permitiéndote reordenar, girar, quitar, añadir, combinar documentos arrastrándolos..
-    - pdfshuffler # PDF-Shuffler, aplicación gráfica interactiva e intuitiva que permite fusionar, dividir y volver a organizar las páginas de los documentos PDF
-    - picard # Aplicación para análisis y reconocimiento de álbumnes de música
-    - pinta # Paint equivalente
-    - retext # Installar Retext para editar y visualizar markdown
-    - stacer # Software de Optimización y Monitoreo de Sistemas Linux
+    - pdfmod                        # pdfmod, editor PDF, modificar documentos PDF, permitiéndote reordenar, girar, quitar, añadir, combinar documentos arrastrándolos..
+    - picard                        # Aplicación para análisis y reconocimiento de álbumnes de música
+    - pinta                         # Paint equivalente
+    - stacer                        # Software de Optimización y Monitoreo de Sistemas Linux
     - simple-scan
-    #- sysinfo # Sysinfo, herramienta gráfica para mostrar información sobre la configuración del hardware
-    - variety # Variety, aplicación que cambia el fondo de escritorio de forma regular, el uso de imágenes especificadas por el usuario o descargados automáticamente.
+    - variety                       # Variety, aplicación que cambia el fondo de escritorio de forma regular, el uso de imágenes especificadas por el usuario o descargados automáticamente.
     - wakeonlan
-    - vlc # VLC, reproductor multimedia archivos multimedia, así como DVD, protocolos Audio CD, VCD y streaming diversos..
+    - vlc                           # VLC, reproductor multimedia archivos multimedia, así como DVD, protocolos Audio CD, VCD y streaming diversos..
     - x264
     - x265
     - xbindkeys
-    - xserver-xorg-input-synaptics # Para hacer funcionar el Touchpad
-    - zeal # Navegador de documentación para desarrolladores
+    - xserver-xorg-input-synaptics  # Para hacer funcionar el Touchpad
+    - zeal                          # Navegador de documentación para desarrolladores
     
+- name: Install Snap packages
+  snap:
+    name:
+      - gitkraken
+      - joplin-desktop
+      - breaktimer        # Pomodoro application
     
 #Google Chrome
 #- name: Chrome repo key
