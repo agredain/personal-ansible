@@ -10,23 +10,29 @@
       users:
         - username: "{{ lookup('env','USER') }}"
           visual_studio_code_extensions:
-            #- vscoss.vscode-ansible
+            - alefragnani.Bookmarks
+            - aaron-bond.better-comments
+            - bierner.markdown-mermaid
+            - christian-kohler.path-intellisense
+            - CoenraadS.bracket-pair-colorizer-2
+            - damonsk.vscode-wardley-maps
+            - DavidAnson.vscode-markdownlint
+            - hediet.vscode-drawio
+            - IBM.output-colorizer
+            - jmmeessen.jenkins-declarative-support
+            - janjoerke.jenkins-pipeline-linter-connector
+            - lacroixdavid1.vscode-format-context-menu
+            - ms-azuretools.vscode-docker
             - ms-vscode.cpptools
             - ms-python.python
-            - jmmeessen.jenkins-declarative-support
-            - ms-azuretools.vscode-docker
-            - janjoerke.jenkins-pipeline-linter-connector
-            - tomoki1207.pdf
-            - aaron-bond.better-comments
-            - lacroixdavid1.vscode-format-context-menu
-            - christian-kohler.path-intellisense
-            - alefragnani.Bookmarks
-            - CoenraadS.bracket-pair-colorizer-2
-            - streetsidesoftware.code-spell-checker
             - ms-vscode-remote.remote-wsl
             - ms-vscode-remote.remote-containers
             - ms-vscode-remote.remote-ssh
-            - IBM.output-colorizer
+            - MS-vsliveshare.vsliveshare
             - shd101wyy.markdown-preview-enhanced
+            - streetsidesoftware.code-spell-checker
+            - tomoki1207.pdf
             - vscodevim.vim
+            - yzhang.markdown-all-in-one
+            #- vscoss.vscode-ansible
             
