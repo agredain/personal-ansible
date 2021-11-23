@@ -204,3 +204,8 @@
 
 - name: Init Chezmoi
   shell: chezmoi init https://github.com/agredain/dotfiles.git
+
+- name: Install StarShip
+  script: https://starship.rs/install.sh
+
+  https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/UbuntuMono.zip
