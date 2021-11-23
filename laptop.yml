@@ -15,6 +15,7 @@
             - bierner.markdown-mermaid
             - christian-kohler.path-intellisense
             - CoenraadS.bracket-pair-colorizer-2
+            - dBizzy.dbizzy
             - damonsk.vscode-wardley-maps
             - DavidAnson.vscode-markdownlint
             - hediet.vscode-drawio
@@ -22,7 +23,9 @@
             - jmmeessen.jenkins-declarative-support
             - janjoerke.jenkins-pipeline-linter-connector
             - lacroixdavid1.vscode-format-context-menu
+            - lunuan.kubernetes-templates
             - ms-azuretools.vscode-docker
+            - ms-kubernetes-tools.vscode-kubernetes-tools
             - ms-vscode.cpptools
             - ms-python.python
             - ms-vscode-remote.remote-wsl
