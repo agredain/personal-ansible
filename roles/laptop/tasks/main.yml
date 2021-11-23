@@ -46,7 +46,7 @@
     - bleachbit                     # Installar Bleachbit, el Ccleaner de linux
     - filelight                     # Intallar Filelight, aplicación para ver el espacio ocupado por archivos y directorios de forma visual
     #- fslint                       # Installar FSlint (FileSystem Lint) para buscar y eliminar archivos duplicados
-    - gparted                       # GParted es un editor de particiones 
+    - gparted                       # GParted es un editor de particiones
     - hardinfo                      # HardInfo, interfaz gráfica que muestra información del sistema, memoria, procesador, kernell, entre otras cosas
     - hplip
     - krename
@@ -69,12 +69,14 @@
     - xserver-xorg-input-synaptics  # Para hacer funcionar el Touchpad
     - zeal                          # Navegador de documentación para desarrolladores
     
+    
 - name: Install Snap packages
   snap:
     name:
       - gitkraken
       - joplin-desktop
       - breaktimer        # Pomodoro application
+    classic: yes
     
 #Google Chrome
 #- name: Chrome repo key
