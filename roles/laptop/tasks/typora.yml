@@ -1,0 +1,14 @@
+# Typora
+- name: Typora repo key
+  apt_key:
+    url: https://typora.io/linux/public-key.asc
+    state: present
+
+- name: Add Typora repository
+  apt_repository:
+    repo: deb https://typora.io/linux ./
+    state: present
+
+- name: Install Typora
+  apt:
+    name: typora

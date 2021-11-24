@@ -1,0 +1,17 @@
+# Enpass
+
+- name: Enpass repo keyserver
+  apt_key:
+    url: https://dl.sinew.in/keys/enpass-linux.key
+    state: present
+   
+- name: Add Enpass repository
+  apt_repository:
+    repo: deb http://repo.sinew.in/ stable main
+    state: present
+    filename: enpass
+
+- name: Install Enpass
+  apt:
+    name: enpass
+    

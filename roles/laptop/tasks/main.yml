@@ -69,60 +69,28 @@
     - xserver-xorg-input-synaptics  # Para hacer funcionar el Touchpad
     - zeal                          # Navegador de documentación para desarrolladores
     
-    
 - name: Install Snap packages
   snap:
     name:
-      - gitkraken
-      - joplin-desktop
-      - breaktimer        # Pomodoro application
+    - gitkraken
+    - joplin-desktop
+    - breaktimer        # Pomodoro application
     classic: yes
     
-#Google Chrome
-#- name: Chrome repo key
-  #apt_key:
-    #url: https://dl-ssl.google.com/linux/linux_signing_key.pub
-    #state: present
+- name: Install Brave
+  include_tasks: brave.yml
 
-#- name: Chrome repository
-  #apt_repository:
-    #repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
-    #state: present
-    #filename: google-chrome
+- name: Install Enpass
+  include_tasks: enpass.yml
 
-#- name: Install Chrome
-  #apt:
-    #name: google-chrome-stable
+- name: Install Typora
+  include_tasks: typora.yml
 
-# Insync
-#- name: Insync
-  #apt_key:
-    #keyserver: keyserver.ubuntu.com
-    #id: ACCAF35C
+- name: Install Ferdi
+  include_tasks: ferdi.yml
 
-#- apt_repository:
-    #repo: deb http://apt.insync.io//ubuntu {{ansible_lsb.codename}} non-free contrib
-    #state: present
-    #filename: insync
-
-#- name: Install Insync
-  #apt:
-    #name: insync
-    
-#Enpass
-#- name: Enpass repo keyserver
-  #apt_key:
-    #url: https://dl.sinew.in/keys/enpass-linux.key
-    #state: present
-   
-#- apt_repository:
-    #repo: deb http://repo.sinew.in/ stable main
-    #state: present
-    #filename: enpass
-
-#- name: Install Enpass
-  #apt:
-    #name: enpass
+- name: Install Insync
+  include_tasks: insync.yml
     
 # Lutris
 # - name: Lutris repo keyserver
@@ -141,31 +109,10 @@
 #     - lutris
 #     - steam
     
-# Typora
-- name: Typora repo key
-  apt_key:
-    url: https://typora.io/linux/public-key.asc
-    state: present
-
-- apt_repository:
-    repo: deb https://typora.io/linux ./
-    state: present
-
-- name: Install Typora
-  apt:
-    name: typora
-    
-    
 # Install "Rambox" snap
 # - name: Install Rambox
 #   snap:
 #     name: rambox
-#     state: present
-
-# Install "GitKraken" snap
-# - name: Install GitKraken
-#   snap:
-#     name: gitkraken
 #     state: present
 
 # Install "Mackup" snap
@@ -174,9 +121,6 @@
 #     name: mackup
 #     state: present
 #     classic
-
-#- name: Install and update Joplin
-  #shell: wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
 
 #- name: Install Oh my Fish
 #  shell: curl -L https://get.oh-my.fish | fish

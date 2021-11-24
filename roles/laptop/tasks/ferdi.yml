@@ -1,0 +1,17 @@
+# Get Ferdi
+- name: Get version list of Ferdi
+  uri: 
+    url: https://api.github.com/repos/getferdi/ferdi/releases/latest
+    return_content: yes
+    body_format: json
+  register: ferdi
+
+- name: Gather Ferdi url
+  set_fact:
+    ferdi_url: "{{ ferdi.json | json_query(url_query) | first}}"
+  vars:
+    url_query: "assets[?contains(browser_download_url,'amd64.deb')].browser_download_url"
+
+- name: Install Ferdi
+  apt:
+    deb: "{{ ferdi_url }}"

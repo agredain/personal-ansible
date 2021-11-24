@@ -32,14 +32,14 @@
 # - name: Set Fish as default Interpreter
 #   command: chsh -s 'which fish'
 
-- name: Make most permanent
-  blockinfile:
-    path: ~/.bashrc
-    line: |
-      export PAGER="most"
-      alias ls='ls --color=auto'
-      alias dir='dir --color=auto'
-      alias vdir='vdir --color=auto'
-      alias grep='grep --color=auto'
-      alias fgrep='fgrep --color=auto'
-      alias egrep='egrep --color=auto'
+#- name: Make most permanent
+  #blockinfile:
+    #path: ~/.bashrc
+    #line: |
+      #export PAGER="most"
+      #alias ls='ls --color=auto'
+      #alias dir='dir --color=auto'
+      #alias vdir='vdir --color=auto'
+      #alias grep='grep --color=auto'
+      #alias fgrep='fgrep --color=auto'
+      #alias egrep='egrep --color=auto'
