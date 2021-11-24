@@ -6,7 +6,7 @@
 
 - name: Add Insync repository to list of repositories
   apt_repository:
-    repo: deb http://apt.insync.io//ubuntu {{ansible_lsb.codename}} non-free contrib
+    repo: deb http://apt.insync.io/ubuntu {{ansible_lsb.codename}} non-free contrib
     state: present
     filename: insync
 

@@ -89,8 +89,8 @@
 - name: Install Ferdi
   include_tasks: ferdi.yml
 
-- name: Install Insync
-  include_tasks: insync.yml
+# - name: Install Insync
+#   include_tasks: insync.yml
     
 # Lutris
 # - name: Lutris repo keyserver
