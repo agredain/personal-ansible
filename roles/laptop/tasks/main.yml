@@ -75,6 +75,7 @@
     - gitkraken
     - joplin-desktop
     - breaktimer        # Pomodoro application
+    - authy             # strong authentication
     classic: yes
     
 - name: Install Brave
