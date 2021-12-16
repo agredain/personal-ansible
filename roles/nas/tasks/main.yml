@@ -7,23 +7,16 @@
 
 - name: Add General Backup Daemon Files
   copy:
-    src: "{{ item }}"
+    src: backup-script.service
     dest: /etc/systemd/system/
     force: no
-  loop:
-  - media-backup.mount
-  - media-backup.automount
-  - backup-script.service
 
-- name: Enable General Backup Daemon
-  systemd:
-    name: "{{ item }}"
-    enabled: yes
-    masked: no
-  loop:
-  - media-backup.automount
-  - backup-script.service
-    
+- name: Add General Backup Udev Files
+  copy:
+    src: 90-mount_media_backup.rules
+    dest: /etc/udev/rules.d/
+    force: no
+  
 - name: Clean Agredain photos daily
   cron:
     name: "Clean Nextcloud photos"

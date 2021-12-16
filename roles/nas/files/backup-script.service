@@ -1,10 +1,5 @@
 [Unit]
-Description=My flashdrive script trigger
-Requires=media-backup.mount
-After=media-backup.mount
+Description=General Backup Task
 
 [Service]
-ExecStart=/media/data/scripts/backup.sh
-
-[Install]
-WantedBy=media-backup.mount
+ExecStart=/media/data/scripts/backup_general.sh

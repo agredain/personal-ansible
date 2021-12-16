@@ -1,0 +1,1 @@
+KERNEL=="sd??", ACTION=="add", ENV{ID_FS_UUID}=="fd8ae7f1-d928-4732-a4ea-4910c62c1b5f", RUN+="/bin/systemctl start backup-script.service"
