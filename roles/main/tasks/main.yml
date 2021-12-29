@@ -9,6 +9,7 @@
 - name: Install Extras Packages
   apt:
     name:
+    - bat           # A cat(1) clone with syntax highlighting and Git integration.
     - ubuntu-restricted-extras
     - exfat-fuse 
     - exfat-utils
