@@ -10,6 +10,7 @@
       users:
         - username: "{{ lookup('env','USER') }}"
           visual_studio_code_extensions:
+            - activecove.marquee
             - alefragnani.Bookmarks
             - aaron-bond.better-comments
             - bierner.markdown-mermaid
@@ -18,8 +19,10 @@
             - dBizzy.dbizzy
             - damonsk.vscode-wardley-maps
             - DavidAnson.vscode-markdownlint
+            - GitLab.gitlab-workflow
             - hediet.vscode-drawio
             - IBM.output-colorizer
+            - kubescape.kubescape
             - jmmeessen.jenkins-declarative-support
             - janjoerke.jenkins-pipeline-linter-connector
             - lacroixdavid1.vscode-format-context-menu
