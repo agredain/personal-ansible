@@ -27,6 +27,7 @@
             - janjoerke.jenkins-pipeline-linter-connector
             - lacroixdavid1.vscode-format-context-menu
             - lunuan.kubernetes-templates
+            - mintlify.document
             - ms-azuretools.vscode-docker
             - ms-kubernetes-tools.vscode-kubernetes-tools
             - ms-vscode.cpptools
