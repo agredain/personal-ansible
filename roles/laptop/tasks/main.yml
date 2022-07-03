@@ -142,3 +142,25 @@
   shell: cat /tmp/install.sh | sh -s -- -y
 
 #  https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/UbuntuMono.zip
+
+# https://github.com/xxh/xxh
+- name: Install xxh
+  pip:
+    name: xxh-xxh
+
+- name: Install xxh plugin
+  shell: "xxh +I {{ item }}" 
+  loop: 
+    - xxh-shell-bash
+    - xxh-plugin-prerun-dotfiles
+    - xxh-plugin-prerun-starship+git+https://github.com/izissise/xxh-plugin-prerun-starship.git
+
+- name: Configure xxh
+  blockinfile:
+    path: ~/.config/xxh/config.xxhc
+    block: |
+      hosts:
+        ".*":
+          +s: bash
+          +I: xxh-plugin-prerun-dotfiles
+
