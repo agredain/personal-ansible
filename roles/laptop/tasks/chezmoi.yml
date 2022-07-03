@@ -1,0 +1,20 @@
+# Get Chezmoi
+- name: Get version list of Chezmoi
+  uri: 
+    url: https://api.github.com/repos/twpayne/chezmoi/releases/latest
+    return_content: yes
+    body_format: json
+  register: chezmoi
+
+- name: Gather Chezmoi url
+  set_fact:
+    chezmoi_url: "{{ chezmoi.json | to_json | from_json | json_query(url_query) | first}}"
+  vars:
+    url_query: "assets[?contains(browser_download_url,'amd64.deb')].browser_download_url"
+
+- name: Install Chezmoi
+  apt:
+    deb: "{{ chezmoi_url }}"
+
+- name: Init Chezmoi
+  shell: chezmoi init https://github.com/agredain/dotfiles.git
