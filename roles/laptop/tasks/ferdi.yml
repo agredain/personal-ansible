@@ -6,12 +6,10 @@
     body_format: json
   register: ferdi
 
-- name: Gather Ferdi url
+- name: Gather Ferdi version
   set_fact:
-    ferdi_url: "{{ ferdi.json | json_query(url_query) | first}}"
-  vars:
-    url_query: "assets[?contains(browser_download_url,'amd64.deb')].browser_download_url"
+    ferdi_latest: "{{ ferdi.json.name }}"
 
 - name: Install Ferdi
   apt:
-    deb: "{{ ferdi_url }}"
+    deb: "https://github.com/getferdi/ferdi/releases/download/v{{ ferdi_latest }}/ferdi_{{ ferdi_latest }}_amd64.deb"
