@@ -1,0 +1,15 @@
+# Get Httpi
+- name: Get version list of Httpi
+  uri: 
+    url: https://api.github.com/repos/httpie/desktop/releases/latest
+    return_content: yes
+    body_format: json
+  register: httpi
+
+- name: Gather Httpi version
+  set_fact:
+    httpi_latest: "{{ httpi.json.name }}"
+
+- name: Install Httpi
+  apt:
+    deb: "https://github.com/httpie/desktop/releases/download/v{{ httpi_latest }}/HTTPie-{{ httpi_latest }}.AppImage"
