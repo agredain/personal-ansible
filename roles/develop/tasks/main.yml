@@ -6,3 +6,11 @@
     name:
     - cppcheck
     - docker.io
+
+- name: Prune docker weekly 
+  copy:
+    src: docker-prune
+    dest: /etc/cron.weekly/docker-prune
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
