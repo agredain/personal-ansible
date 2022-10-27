@@ -1,0 +1,14 @@
+---
+# tasks file for ssh
+
+- name: Disable root login
+  
+
+# https://dev.to/bogkonstantin/send-message-to-telegram-on-any-ssh-login-24c8
+- name: Add Telegram notification of new login
+  copy:
+    src: login-notify.sh
+    dest: /etc/profile.d/login-notify.sh
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
