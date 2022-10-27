@@ -1,0 +1,15 @@
+# Get OpenLens
+- name: Get version list of OpenLens
+  uri: 
+    url: https://api.github.com/repos/MuhammedKalkan/OpenLens/releases/latest
+    return_content: yes
+    body_format: json
+  register: open_lens
+
+- name: Gather OpenLens version
+  set_fact:
+    open_lens_latest: "{{ open_lens.json.name }}"
+
+- name: Install OpenLens
+  apt:
+    deb: "https://github.com/MuhammedKalkan/OpenLens/releases/download/{{ open_lens_latest }}/OpenLens-{{ open_lens_latest }}.AppImage"
