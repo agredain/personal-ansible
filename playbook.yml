@@ -1,22 +1,16 @@
 - hosts: all
-  become: yes
-  
+  become: true
   roles:
     - main
     - server
+
+# - hosts: nas
+#   become: true
+#   roles:
 #    - dockstarter
+# #    - nas
+# #    - role: geerlingguy.nfs
+# #      nfs_exports: [
+# #        "/home/agredain/Downloads 192.168.1.129(rw,sync,no_subtree_check)"
+# #      ]
 
-- hosts: nas
-  become: yes
-  roles:
-#    - nas
-#    - role: geerlingguy.nfs
-#      nfs_exports: [
-#        "/home/agredain/Downloads 192.168.1.129(rw,sync,no_subtree_check)"
-#      ]
-
-- hosts: barebone
-  become: yes
-
-  roles:
-    - barebone
