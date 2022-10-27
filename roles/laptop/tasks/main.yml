@@ -90,6 +90,12 @@
 - name: Install Ferdi
   include_tasks: ferdi.yml
 
+- name: Install Httpi Desktop
+  include_tasks: httpi.yml
+
+- name: Install OpenLens Desktop
+  include_tasks: openlens.yml
+
 - name: Install Chezmoi
   include_tasks: chezmoi.yml
 
@@ -163,4 +169,10 @@
         ".*":
           +s: bash
           +I: xxh-plugin-prerun-dotfiles
+
+- name: Download Appimage Update Tool
+  get_url:
+    url: https://github.com/AppImage/AppImageUpdate/releases/download/2.0.0-alpha-1-20220124/appimageupdatetool-x86_64.AppImage
+    dest: ~/Applications
+    mode: 764
 
