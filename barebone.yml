@@ -1,8 +1,0 @@
-- hosts: barebone
-  become: yes
-
-  roles:
-    - main
-    - server
-    - barebone
-    - dockstarter
