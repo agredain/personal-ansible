@@ -1,6 +1,10 @@
 ---
 # tasks file for develop
 
+- name: Install Zeal
+  apt:
+    name: zeal
+
 - name: Install CppCheck
   apt:
     name:
