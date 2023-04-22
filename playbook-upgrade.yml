@@ -28,4 +28,7 @@
 
   - name: Update Dockstarter
     shell: ds -u
+    when: dockstarted
+    tags:
+      - ds
 

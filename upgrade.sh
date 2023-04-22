@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-ansible-playbook -i inventories playbook-upgrade.yml -kK
+ansible-playbook -i inventories/inventory.yml playbook-upgrade.yml
 
