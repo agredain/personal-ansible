@@ -76,6 +76,7 @@
     - joplin-desktop
     - breaktimer        # Pomodoro application
     - authy             # strong authentication
+    - auto-cpufreq      # Automatic CPU speed & power optimizer for Linux
     classic: yes
     
 - name: Install Brave
