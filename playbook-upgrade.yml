@@ -20,15 +20,22 @@
 
     - name:
       pause:
-        prompt: Please check the list. Press return to continue. Press Ctrl+c and then "a" to abort
+        prompt: Please check the list. Press return to continue. Press Ctrl+c and then
+          "a" to abort
 
     - name: Upgrade all packages to the latest version
       apt:
         name: "*"
         state: latest
 
-    - name: Update Dockstarter
-      shell: ds -y -u
-      when: dockstarted
-      tags:
-        - ds
+    - name: Run ds -y -u
+      expect:
+        command: ds -y -u
+        responses:
+          (?i)password: "{{ ansible_become_pass }}\n"
+          (?i)password for.*: "{{ ansible_become_pass }}\n"
+        timeout: 60
+        echo: true
+      no_log: true
+      become: false
+      when: dockstarted | default(false)
