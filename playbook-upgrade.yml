@@ -14,19 +14,14 @@
     - set_fact:
         upgradeable: "{{ upgradable_std.stdout_lines[1:] }}"
 
-    - name: Show me
-      debug:
-        var: upgradeable
-
-    - name:
-      pause:
-        prompt: Please check the list. Press return to continue. Press Ctrl+c and then
-          "a" to abort
-
     - name: Upgrade all packages to the latest version
       apt:
         name: "*"
         state: latest
+
+    - name: Show upgraded packages
+      debug:
+        msg: "{{ upgradeable }}"
 
     - name: Run ds -y -u
       expect:
