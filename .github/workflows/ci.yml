@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  lint:
+    name: ansible-lint + syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Ansible and ansible-lint
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible ansible-lint
+
+      - name: Install Galaxy dependencies
+        run: |
+          ansible-galaxy role install -p .ansible/roles -r requirements.yml
+          ansible-galaxy collection install -p .ansible/collections -r requirements.yml
+
+      # inventories/vault.yml está cifrado. En CI no existe la clave real, así
+      # que se crea una dummy: ansible-lint intenta descifrar el inventario y,
+      # sin clave, se queda en un prompt interactivo que cuelga el job. Con una
+      # clave dummy el descifrado falla "graciosamente" y el lint continúa
+      # (vault.yml solo contiene hostvars, no tareas que linte).
+      - name: Create dummy vault key
+        run: |
+          echo "ci-dummy-key" > .vault_pass_ci
+          chmod 600 .vault_pass_ci
+
+      - name: Run ansible-lint
+        env:
+          ANSIBLE_VAULT_PASSWORD_FILE: ${{ github.workspace }}/.vault_pass_ci
+        run: ansible-lint
+
+      - name: Syntax check playbooks
+        env:
+          ANSIBLE_VAULT_PASSWORD_FILE: ${{ github.workspace }}/.vault_pass_ci
+        run: |
+          ansible-playbook --syntax-check playbook.yml
+          ansible-playbook --syntax-check laptop.yml
+          ansible-playbook --syntax-check playbook-upgrade.yml
+
+  molecule:
+    name: molecule (${{ matrix.role }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        role: [claude, main, ssh, server]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Ansible, Molecule and Podman
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible molecule molecule-plugins[docker]
+          sudo apt-get update
+          sudo apt-get install -y podman
+
+      - name: Install Galaxy dependencies
+        run: |
+          ansible-galaxy role install -p .ansible/roles -r requirements.yml
+          ansible-galaxy collection install -p .ansible/collections -r requirements.yml
+
+      - name: Run Molecule
+        working-directory: roles/${{ matrix.role }}
+        env:
+          BUILDAH_ISOLATION: chroot
+          # molecule-podman usa `when: (lookup('env', 'HOME'))` (string como
+          # booleano), incompatible con ansible-core >= 2.19. Se permite
+          # temporalmente hasta que molecule lo corrija.
+          ANSIBLE_ALLOW_BROKEN_CONDITIONALS: "1"
+        run: molecule test

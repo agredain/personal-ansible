@@ -1,0 +1,23 @@
+---
+# Configuración de ansible-lint.
+# Docs: https://ansible-lint.readthedocs.io/
+profile: moderate
+
+exclude_paths:
+  - .ansible/
+  - .venv/
+  - .git/
+  - .devcontainer/
+  - inventories/
+  - group_vars/
+  - .github/
+  # Roles de Galaxy instalados (código de terceros, no se linta).
+  - .ansible/roles/
+  # Molecule: los escenarios se validan al ejecutar `molecule test`, no con lint.
+  - roles/*/molecule/
+
+# Reglas desactivadas con justificación.
+skip_list:
+  # Los playbooks de este repo son de uso personal y se ejecutan contra un
+  # inventario concreto; no se publican en Galaxy.
+  - role-name
