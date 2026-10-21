@@ -1,9 +1,9 @@
-- hosts: all
+- name: Configure all hosts
+  hosts: all
   become: true
   roles:
     - main
     - server
-
 # - hosts: nas
 #   become: true
 #   roles:
@@ -13,4 +13,3 @@
 # #      nfs_exports: [
 # #        "/home/agredain/Downloads 192.168.1.129(rw,sync,no_subtree_check)"
 # #      ]
-

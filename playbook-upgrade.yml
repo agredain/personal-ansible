@@ -1,30 +1,31 @@
-- hosts: all
-  become: yes
-  gather_facts: yes
+- name: Upgrade all packages
+  hosts: all
+  become: true
+  gather_facts: true
 
   tasks:
     - name: Apt Update
-      apt:
-        update-cache: yes
+      ansible.builtin.apt:
+        update-cache: true
 
     - name: List off upgradable packages
-      command: apt list --upgradable
+      ansible.builtin.command: apt list --upgradable
       register: upgradable_std
 
-    - set_fact:
+    - name: Set upgradable packages fact
+      ansible.builtin.set_fact:
         upgradeable: "{{ upgradable_std.stdout_lines[1:] }}"
 
     - name: Upgrade all packages to the latest version
-      apt:
-        name: "*"
-        state: latest
+      ansible.builtin.apt:
+        upgrade: dist
 
     - name: Show upgraded packages
-      debug:
+      ansible.builtin.debug:
         msg: "{{ upgradeable }}"
 
     - name: Run ds -y -u
-      expect:
+      ansible.builtin.expect:
         command: ds -y -u
         responses:
           (?i)password: "{{ ansible_become_pass }}\n"
