@@ -4,27 +4,14 @@
   gather_facts: true
 
   tasks:
-    - name: Apt Update
-      ansible.builtin.apt:
-        update-cache: true
-
-    - name: List off upgradable packages
-      ansible.builtin.command: apt list --upgradable
-      register: upgradable_std
-
-    - name: Set upgradable packages fact
-      ansible.builtin.set_fact:
-        upgradeable: "{{ upgradable_std.stdout_lines[1:] }}"
-
     - name: Upgrade all packages to the latest version
       ansible.builtin.apt:
+        update_cache: true
         upgrade: dist
+      tags:
+        - upgrade
 
-    - name: Show upgraded packages
-      ansible.builtin.debug:
-        msg: "{{ upgradeable }}"
-
-    - name: Run ds -y -u
+    - name: Run ds -y -u (DockStarter)
       ansible.builtin.expect:
         command: ds -y -u
         responses:
@@ -35,3 +22,5 @@
       no_log: true
       become: false
       when: dockstarted | default(false)
+      tags:
+        - upgrade
