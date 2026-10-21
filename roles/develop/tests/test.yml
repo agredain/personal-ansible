@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
-  remote_user: root
+- name: Test develop role
+  hosts: localhost
+  become: true
   roles:
     - develop

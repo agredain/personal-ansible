@@ -1,0 +1,1 @@
+KERNEL=="sd??", ACTION=="add", ENV{ID_FS_UUID}=="{{ nas_backup_disk_uuid }}", RUN+="/bin/systemctl start backup-script.service"

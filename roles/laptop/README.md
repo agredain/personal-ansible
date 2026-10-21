@@ -1,38 +1,41 @@
-Role Name
-=========
+# laptop
 
-A brief description of the role goes here.
+Escritorio y aplicaciones del portátil.
 
-Requirements
-------------
+## Qué hace
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Añade PPAs: `atareao`, `y-ppa-manager`, `libreoffice`, `nextcloud-devs/client`,
+  `appimagelauncher`.
+- Instala paquetes KDE y utilidades (`latte-dock`, `gparted`, `vlc`, `nextcloud-client`,
+  `stacer`, `variety`, ...).
+- Instala snaps: `gitkraken`, `joplin-desktop`, `breaktimer`, `authy`, `auto-cpufreq`.
+- Instala aplicaciones por archivo de tareas:
+  - `brave.yml` — Brave (repositorio apt con keyring).
+  - `enpass.yml` — Enpass (repositorio apt con keyring).
+  - `typora.yml` — Typora (repositorio apt con keyring).
+  - `ferdi.yml` — Ferdi (deb de GitHub).
+  - `httpi.yml` — HTTPie (AppImage en el home del usuario).
+  - `openlens.yml` — OpenLens (AppImage en el home del usuario).
+  - `chezmoi.yml` — Chezmoi (deb + `chezmoi init`).
+- Herramientas de usuario (se ejecutan como `laptop_desktop_user`, no como root):
+  - Starship (binario en `~/.local/bin`).
+  - xxh + plugins.
+  - AppImageUpdate.
 
-Role Variables
---------------
+## Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Variable | Por defecto | Descripción |
+|----------|-------------|-------------|
+| `laptop_desktop_user` | `{{ ansible_user }}` | Usuario de escritorio para las tareas de scope de usuario. |
 
-Dependencies
-------------
+## Uso
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+```yaml
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  roles:
+    - laptop
+```
 
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Tags: `repos`, `packages`, `config`.

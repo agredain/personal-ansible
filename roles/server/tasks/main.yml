@@ -1,67 +1,91 @@
 ---
 # tasks file for server
 
-- name: Update all packages to the latest version
-  apt:
-    upgrade: dist
-
 - name: Install Cockpit Packages
-  apt:
+  ansible.builtin.apt:
     name:
-    - cockpit
-#    - cockpit-docker
-    - cockpit-networkmanager
-    - cockpit-systemd
+      - cockpit
+      - cockpit-networkmanager
+      - cockpit-systemd
+    update_cache: true
+  notify: Restart cockpit
+  tags:
+    - packages
 
 - name: Install Borgbackup Package
-  apt:
+  ansible.builtin.apt:
     name: borgbackup
+  tags:
+    - packages
 
 - name: Install Unattended Upgrades
-  apt:
+  ansible.builtin.apt:
     name: unattended-upgrades
+  tags:
+    - packages
 
 - name: Config Unattended Email
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
-    regexp: '//Unattended-Upgrade::Mail "";'
-    line: 'Unattended-Upgrade::Mail "agredain@gmail.com";'
+    regexp: 'Unattended-Upgrade::Mail\b'
+    line: 'Unattended-Upgrade::Mail "{{ server_unattended_email }}";'
     state: present
+  notify: Restart unattended-upgrades
+  tags:
+    - config
 
 - name: Config Unattended MailReport
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
-    regexp: '//Unattended-Upgrade::MailReport "on-change";'
+    regexp: 'Unattended-Upgrade::MailReport\b'
     line: 'Unattended-Upgrade::MailReport "on-change";'
     state: present
+  notify: Restart unattended-upgrades
+  tags:
+    - config
 
 - name: Config Unattended Remove-Unused-Kernel-Packages
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
-    regexp: '//Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";'
+    regexp: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages\b'
     line: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";'
     state: present
+  notify: Restart unattended-upgrades
+  tags:
+    - config
 
 - name: Config Unattended Remove-New-Unused-Dependencies
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
-    regexp: '//Unattended-Upgrade::Remove-New-Unused-Dependencies "true";'
+    regexp: 'Unattended-Upgrade::Remove-New-Unused-Dependencies\b'
     line: 'Unattended-Upgrade::Remove-New-Unused-Dependencies "true";'
     state: present
+  notify: Restart unattended-upgrades
+  tags:
+    - config
 
 - name: Config Unattended Remove-Unused-Dependencies
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
-    regexp: '//Unattended-Upgrade::Remove-Unused-Dependencies "false";'
+    regexp: 'Unattended-Upgrade::Remove-Unused-Dependencies\b'
     line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";'
     state: present
+  notify: Restart unattended-upgrades
+  tags:
+    - config
 
 - name: Config Unattended Cache
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/apt/apt.conf.d/20auto-upgrades
     block: |
       APT::Periodic::Download-Upgradeable-Packages "1";
       APT::Periodic::AutocleanInterval "7";
+  notify: Restart unattended-upgrades
+  tags:
+    - config
 
-- name: Enable Unattended Upgrades // MANUAL
-  command: dpkg-reconfigure -plow unattended-upgrades -f noninteractive
+- name: Enable Unattended Upgrades
+  ansible.builtin.command: dpkg-reconfigure -plow unattended-upgrades -f noninteractive
+  changed_when: false
+  tags:
+    - config

@@ -2,5 +2,10 @@
 # tasks file for dockstarter
 
 - name: Install DockStarter
-  shell: bash -c "$(curl -fsSL https://get.dockstarter.com)"
-  become: yes
+  ansible.builtin.shell: bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  become: true
+  args:
+    creates: /usr/local/bin/ds
+  changed_when: false
+  tags:
+    - packages

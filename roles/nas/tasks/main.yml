@@ -1,24 +1,40 @@
 ---
 # tasks file for nas
 
-- name: Update all packages to the latest version
-  apt:
-    upgrade: dist
-
 - name: Add General Backup Daemon Files
-  copy:
+  ansible.builtin.copy:
     src: backup-script.service
-    dest: /etc/systemd/system/
-    force: no
+    dest: /etc/systemd/system/backup-script.service
+    force: true
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd
+  tags:
+    - services
+
+- name: Enable and start backup-script service
+  ansible.builtin.systemd:
+    name: backup-script
+    enabled: true
+    state: started
+  tags:
+    - services
 
 - name: Add General Backup Udev Files
-  copy:
-    src: 90-mount_media_backup.rules
-    dest: /etc/udev/rules.d/
-    force: no
-  
+  ansible.builtin.template:
+    src: 90-mount_media_backup.rules.j2
+    dest: /etc/udev/rules.d/90-mount_media_backup.rules
+    owner: root
+    group: root
+    mode: "0644"
+  tags:
+    - config
+
 - name: Clean Agredain photos daily
-  cron:
+  ansible.builtin.cron:
     name: "Clean Nextcloud photos"
     special_time: daily
     job: "/media/data/scripts/clean_photos.sh"
+  tags:
+    - config

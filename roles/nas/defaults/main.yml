@@ -1,2 +1,5 @@
 ---
 # defaults file for nas
+
+# UUID del disco de backup (para la regla udev).
+nas_backup_disk_uuid: "fd8ae7f1-d928-4732-a4ea-4910c62c1b5f"

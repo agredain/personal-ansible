@@ -1,2 +1,5 @@
 ---
 # defaults file for server
+
+# Email para notificaciones de unattended-upgrades.
+server_unattended_email: "agredain@gmail.com"

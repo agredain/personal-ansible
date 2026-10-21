@@ -2,19 +2,27 @@
 # tasks file for develop
 
 - name: Install Zeal
-  apt:
+  ansible.builtin.apt:
     name: zeal
+  tags:
+    - packages
 
 - name: Install CppCheck
-  apt:
-    name:
-    - cppcheck
-    - docker.io
+  ansible.builtin.apt:
+    name: cppcheck
+  tags:
+    - packages
 
-- name: Prune docker weekly 
-  copy:
-    src: docker-prune
-    dest: /etc/cron.weekly/docker-prune
-    owner: root
-    group: root
-    mode: u=rwx,g=rx,o=rx
+- name: Install Docker
+  ansible.builtin.apt:
+    name: docker.io
+  tags:
+    - packages
+
+- name: Prune docker images weekly
+  ansible.builtin.cron:
+    name: "Prune docker images"
+    special_time: weekly
+    job: "docker image prune -f"
+  tags:
+    - config

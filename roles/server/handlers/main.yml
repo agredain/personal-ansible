@@ -1,2 +1,12 @@
 ---
 # handlers file for server
+
+- name: Restart cockpit
+  ansible.builtin.systemd:
+    name: cockpit
+    state: restarted
+
+- name: Restart unattended-upgrades
+  ansible.builtin.systemd:
+    name: unattended-upgrades
+    state: restarted

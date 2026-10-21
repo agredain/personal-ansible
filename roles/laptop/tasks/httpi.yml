@@ -1,15 +1,26 @@
-# Get Httpi
+# Httpi (AppImage, se instala en el home del usuario de escritorio)
 - name: Get version list of Httpi
-  uri: 
+  ansible.builtin.uri:
     url: https://api.github.com/repos/httpie/desktop/releases/latest
-    return_content: yes
+    return_content: true
     body_format: json
-  register: httpi
+  register: laptop_httpi
+  changed_when: false
+  tags:
+    - packages
 
 - name: Gather Httpi version
-  set_fact:
-    httpi_latest: "{{ httpi.json.name }}"
+  ansible.builtin.set_fact:
+    laptop_httpi_latest: "{{ laptop_httpi.json.tag_name }}"
+  tags:
+    - packages
 
 - name: Install Httpi
-  apt:
-    deb: "https://github.com/httpie/desktop/releases/download/v{{ httpi_latest }}/HTTPie-{{ httpi_latest }}.AppImage"
+  ansible.builtin.get_url:
+    url: "https://github.com/httpie/desktop/releases/download/{{ laptop_httpi_latest }}/HTTPie-{{ laptop_httpi_latest }}.AppImage"
+    dest: "{{ ansible_env.HOME }}/Applications/HTTPie.AppImage"
+    mode: "0755"
+  become: true
+  become_user: "{{ laptop_desktop_user }}"
+  tags:
+    - packages

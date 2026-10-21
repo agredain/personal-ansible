@@ -1,38 +1,32 @@
-Role Name
-=========
+# barebone
 
-A brief description of the role goes here.
+Kodi (media center): PPA y paquetes.
 
-Requirements
-------------
+## Qué hace
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Añade el PPA `team-xbmc/ppa` (repositorio oficial de Kodi) con
+  `update_cache: true`.
+- Instala `x264` y `x265` (códecs de vídeo).
+- Instala los paquetes de Kodi con **lista explícita** (sin wildcards, que el
+  módulo `apt` no expande): `kodi`, `kodi-inputstream-adaptive`,
+  `kodi-inputstream-rtmp`, `kodi-peripheral-joystick`, `kodi-vfs-libarchive`.
 
-Role Variables
---------------
+El `apt upgrade: dist` **no** se ejecuta aquí: lo hace el rol `main`, único
+lugar donde se actualiza la distribución.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Variables
 
-Dependencies
-------------
+No define variables.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Uso
 
-Example Playbook
-----------------
+```yaml
+roles:
+  - barebone
+```
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Tests
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+`tests/test.yml` aplica el rol contra `localhost` con `become: true`.
 
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Tags: `packages`.

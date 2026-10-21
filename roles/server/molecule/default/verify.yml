@@ -1,0 +1,27 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check server packages are installed
+      ansible.builtin.package_facts:
+
+    - name: Assert server packages are present
+      ansible.builtin.assert:
+        that:
+          - "'cockpit' in ansible_facts.packages"
+          - "'borgbackup' in ansible_facts.packages"
+          - "'unattended-upgrades' in ansible_facts.packages"
+        fail_msg: "one or more server packages are missing"
+
+    - name: Check unattended-upgrades email is configured
+      ansible.builtin.command: grep -E 'Unattended-Upgrade::Mail' /etc/apt/apt.conf.d/50unattended-upgrades
+      register: server_mail_cfg
+      changed_when: false
+      failed_when: false
+
+    - name: Assert unattended-upgrades email is set
+      ansible.builtin.assert:
+        that:
+          - server_mail_cfg.rc == 0
+          - "'agredain@gmail.com' in server_mail_cfg.stdout"
+        fail_msg: "unattended-upgrades email is not configured"

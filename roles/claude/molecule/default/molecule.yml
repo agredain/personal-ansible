@@ -12,6 +12,10 @@ platforms:
 
 provisioner:
   name: ansible
+  # El rol se resuelve desde roles/ (padre del rol), no depende del symlink
+  # que molecule crea en create/ (syntax corre antes de create/).
+  env:
+    ANSIBLE_ROLES_PATH: ../../..
   inventory:
     group_vars:
       all:

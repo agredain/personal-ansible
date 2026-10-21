@@ -1,14 +1,25 @@
-# Typora
-- name: Typora repo key
-  apt_key:
+# Typora (repositorio apt con keyring firmado)
+- name: Download Typora signing key
+  ansible.builtin.get_url:
     url: https://typora.io/linux/public-key.asc
-    state: present
+    dest: /usr/share/keyrings/typora.gpg
+    owner: root
+    group: root
+    mode: "0644"
+  tags:
+    - repos
 
 - name: Add Typora repository
-  apt_repository:
-    repo: deb https://typora.io/linux ./
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/typora.gpg] https://typora.io/linux ./"
     state: present
+    filename: typora
+  tags:
+    - repos
 
 - name: Install Typora
-  apt:
+  ansible.builtin.apt:
     name: typora
+    state: present
+  tags:
+    - packages

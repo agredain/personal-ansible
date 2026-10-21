@@ -2,13 +2,22 @@
 # tasks file for ssh
 
 - name: Disable root login
-  
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+  notify: Reload SSH
+  tags:
+    - config
 
 # https://dev.to/bogkonstantin/send-message-to-telegram-on-any-ssh-login-24c8
 - name: Add Telegram notification of new login
-  copy:
+  ansible.builtin.copy:
     src: login-notify.sh
     dest: /etc/profile.d/login-notify.sh
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+  tags:
+    - config

@@ -1,0 +1,28 @@
+dependency:
+  name: galaxy
+  enabled: false
+
+driver:
+  name: podman
+
+platforms:
+  - name: instance
+    image: ubuntu:24.04
+    # molecule-podman busca Dockerfile.j2 por defecto; el nuestro se llama Dockerfile.
+    dockerfile: Dockerfile
+    pre_build_image: false
+    # El rol usa handlers systemd; el contenedor debe ejecutar systemd como PID 1.
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    command: /lib/systemd/systemd
+
+provisioner:
+  name: ansible
+  # El rol se resuelve desde roles/ (padre del rol), no depende del symlink
+  # que molecule crea en create/ (syntax corre antes de create/).
+  env:
+    ANSIBLE_ROLES_PATH: ../../..
+
+verifier:
+  name: ansible

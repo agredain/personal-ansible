@@ -1,46 +1,38 @@
 ---
 # tasks file for main
+# Rol base: el único lugar donde se ejecuta `apt upgrade: dist` (compartido
+# por playbook.yml y laptop.yml).
 
 - name: Update all packages to the latest version
-  apt:
+  ansible.builtin.apt:
     upgrade: dist
+    update_cache: true
+  tags:
+    - upgrade
 
 # Extra packages
 - name: Install Extras Packages
-  apt:
+  ansible.builtin.apt:
     name:
-    - bat           # A cat(1) clone with syntax highlighting and Git integration.
-    - ubuntu-restricted-extras
-    - exfat-fuse 
-    - exfat-utils
-    - rar 
-    - unrar
-    - zip
-    - unzip
-    - curl
-    - neofetch      # Neofetch displays an ASCII logo of your Linux distribution along with information related to your system in the terminal
-    - lm-sensors    # Herramientas para leer la información de los sensores de temperatura, voltaje y ventiladores
-    - microcode.ctl # Microcódigo en procesadores Intel
-    - rmlint        # Remove duplicate files by hash
-    - preload       # Speed application load
-    - prelink       # Se encarga de preenlazar las librerías que necesitan las aplicaciones que utilizamos, reduciendo así los tiempos de apertura
-    - git
-    - fish          # Interprete de comandos supermolón
-    - ncdu          # Folder statistic in terminal
-    - most          # Colorful manpages
-    - bleachbit     # Remove unnecessary system files
-
-# - name: Set Fish as default Interpreter
-#   command: chsh -s 'which fish'
-
-#- name: Make most permanent
-  #blockinfile:
-    #path: ~/.bashrc
-    #line: |
-      #export PAGER="most"
-      #alias ls='ls --color=auto'
-      #alias dir='dir --color=auto'
-      #alias vdir='vdir --color=auto'
-      #alias grep='grep --color=auto'
-      #alias fgrep='fgrep --color=auto'
-      #alias egrep='egrep --color=auto'
+      - bat # A cat(1) clone with syntax highlighting and Git integration.
+      - ubuntu-restricted-extras
+      - exfat-fuse
+      - exfatprogs  # exfat-utils fue eliminado de Ubuntu; exfatprogs es el reemplazo
+      - rar
+      - unrar
+      - zip
+      - unzip
+      - curl
+      - neofetch # ASCII logo de la distro + información del sistema en terminal.
+      - lm-sensors # Sensores de temperatura, voltaje y ventiladores.
+      - intel-microcode # Microcódigo en procesadores Intel (reemplaza microcode.ctl).
+      - amd64-microcode # Microcódigo en procesadores AMD (reemplaza microcode.ctl).
+      - rmlint # Elimina archivos duplicados por hash.
+      - preload # Acelera la carga de aplicaciones.
+      - git
+      - fish # Interprete de comandos.
+      - ncdu # Estadísticas de carpetas en terminal.
+      - most # Manpages a color.
+      - bleachbit # Elimina archivos innecesarios del sistema.
+  tags:
+    - packages

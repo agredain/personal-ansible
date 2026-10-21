@@ -1,15 +1,26 @@
-# Get OpenLens
+# OpenLens (AppImage, se instala en el home del usuario de escritorio)
 - name: Get version list of OpenLens
-  uri: 
+  ansible.builtin.uri:
     url: https://api.github.com/repos/MuhammedKalkan/OpenLens/releases/latest
-    return_content: yes
+    return_content: true
     body_format: json
-  register: open_lens
+  register: laptop_open_lens
+  changed_when: false
+  tags:
+    - packages
 
 - name: Gather OpenLens version
-  set_fact:
-    open_lens_latest: "{{ open_lens.json.name }}"
+  ansible.builtin.set_fact:
+    laptop_open_lens_latest: "{{ laptop_open_lens.json.tag_name }}"
+  tags:
+    - packages
 
 - name: Install OpenLens
-  apt:
-    deb: "https://github.com/MuhammedKalkan/OpenLens/releases/download/{{ open_lens_latest }}/OpenLens-{{ open_lens_latest }}.AppImage"
+  ansible.builtin.get_url:
+    url: "https://github.com/MuhammedKalkan/OpenLens/releases/download/{{ laptop_open_lens_latest }}/OpenLens-{{ laptop_open_lens_latest }}.AppImage"
+    dest: "{{ ansible_env.HOME }}/Applications/OpenLens.AppImage"
+    mode: "0755"
+  become: true
+  become_user: "{{ laptop_desktop_user }}"
+  tags:
+    - packages

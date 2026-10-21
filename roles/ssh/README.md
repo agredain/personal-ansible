@@ -1,38 +1,28 @@
-Role Name
-=========
+# ssh
 
-A brief description of the role goes here.
+Hardening SSH y notificación de login.
 
-Requirements
-------------
+## Qué hace
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Desactiva el login de root en `/etc/ssh/sshd_config` (`PermitRootLogin no`).
+  Handler de `Reload SSH`.
+- Despliega `login-notify.sh` a `/etc/profile.d/` que envía un mensaje de
+  Telegram en cada login (depende de `/media/data/scripts/telegram-notify`).
 
-Role Variables
---------------
+## Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+No define variables.
 
-Dependencies
-------------
+## Uso
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+```yaml
+roles:
+  - ssh
+```
 
-Example Playbook
-----------------
+## Tests
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Tiene un escenario Molecule (`molecule/default/`) que verifica `PermitRootLogin no`
+y la presencia de `login-notify.sh`.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Tags: `config`.

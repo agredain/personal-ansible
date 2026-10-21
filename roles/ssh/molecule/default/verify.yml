@@ -1,0 +1,27 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check sshd_config disables root login
+      ansible.builtin.command: grep -E '^PermitRootLogin' /etc/ssh/sshd_config
+      register: root_login
+      changed_when: false
+      failed_when: false
+
+    - name: Assert root login is disabled
+      ansible.builtin.assert:
+        that:
+          - root_login.rc == 0
+          - "'PermitRootLogin no' in root_login.stdout"
+        fail_msg: "root login is not disabled in sshd_config"
+
+    - name: Check login notification script is deployed
+      ansible.builtin.stat:
+        path: /etc/profile.d/login-notify.sh
+      register: notify_script
+
+    - name: Assert login notification script exists
+      ansible.builtin.assert:
+        that:
+          - notify_script.stat.exists
+        fail_msg: "login-notify.sh is missing"

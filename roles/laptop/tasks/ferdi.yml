@@ -1,15 +1,23 @@
-# Get Ferdi
+# Ferdi (deb de GitHub releases)
 - name: Get version list of Ferdi
-  uri: 
+  ansible.builtin.uri:
     url: https://api.github.com/repos/getferdi/ferdi/releases/latest
-    return_content: yes
+    return_content: true
     body_format: json
-  register: ferdi
+  register: laptop_ferdi
+  changed_when: false
+  tags:
+    - packages
 
 - name: Gather Ferdi version
-  set_fact:
-    ferdi_latest: "{{ ferdi.json.name }}"
+  ansible.builtin.set_fact:
+    laptop_ferdi_latest: "{{ laptop_ferdi.json.tag_name }}"
+  tags:
+    - packages
 
 - name: Install Ferdi
-  apt:
-    deb: "https://github.com/getferdi/ferdi/releases/download/v{{ ferdi_latest }}/ferdi_{{ ferdi_latest }}_amd64.deb"
+  ansible.builtin.apt:
+    deb: "https://github.com/getferdi/ferdi/releases/download/{{ laptop_ferdi_latest }}/ferdi_{{ laptop_ferdi_latest }}_amd64.deb"
+    state: present
+  tags:
+    - packages

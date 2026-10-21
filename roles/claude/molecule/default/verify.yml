@@ -57,7 +57,7 @@
       assert:
         that:
           - kvm_group.rc == 0
-          - "lookup('env','USER') in kvm_group.stdout"
+          - "ansible_user in kvm_group.stdout"
         fail_msg: "user is not in kvm group"
       when: claude_cowork | default(false)
 

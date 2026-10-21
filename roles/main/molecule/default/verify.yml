@@ -1,0 +1,16 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check base packages are installed
+      ansible.builtin.package_facts:
+
+    - name: Assert base packages are present
+      ansible.builtin.assert:
+        that:
+          - "'bat' in ansible_facts.packages"
+          - "'git' in ansible_facts.packages"
+          - "'curl' in ansible_facts.packages"
+          - "'fish' in ansible_facts.packages"
+          - "'unzip' in ansible_facts.packages"
+        fail_msg: "one or more base packages are missing"

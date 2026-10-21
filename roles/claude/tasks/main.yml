@@ -12,14 +12,17 @@
     mode: "0644"
 
 - name: Add Claude Desktop apt repository
-  apt_repository:
-    repo: deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/claude-desktop-archive-keyring.asc] https://downloads.claude.ai/claude-desktop/apt/stable stable main
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch=amd64,arm64
+      signed-by=/usr/share/keyrings/claude-desktop-archive-keyring.asc]
+      https://downloads.claude.ai/claude-desktop/apt/stable stable main
     filename: claude-desktop
     state: present
 
 - name: Update apt cache
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
 
 - name: Install Claude Desktop
   apt:
@@ -35,10 +38,10 @@
   when: claude_cowork | default(false)
 
 - name: Add user to kvm group
-  user:
-    name: "{{ lookup('env','USER') }}"
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
     groups: kvm
-    append: yes
+    append: true
   when: claude_cowork | default(false)
 
 - name: Load vhost_vsock module on boot

@@ -1,28 +1,31 @@
-# Brave Chrome
-
+# Brave Chrome (repositorio apt con keyring firmado)
 - name: Get keyring file
-  get_url:
+  ansible.builtin.get_url:
     url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
     dest: "/usr/share/keyrings/brave-browser-archive-keyring.gpg"
-  become: true
+    owner: root
+    group: root
+    mode: "0644"
+  tags:
+    - repos
 
 - name: Add Brave repository to list of repositories
-  shell: |
-    set -o pipefail
-    echo 'deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main' |\
-      sudo tee -a /etc/apt/sources.list.d/brave-browser-release.list
-    creates=/etc/apt/sources.list.d/brave-browser-release.list
-  args:
-    executable: /bin/bash
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
+    state: present
+    filename: brave-browser-release
+  tags:
+    - repos
 
 - name: Update apt cache
-  apt: 
-    update_cache: yes
-  become: true
+  ansible.builtin.apt:
+    update_cache: true
+  tags:
+    - repos
 
 - name: Install Brave
-  apt:
+  ansible.builtin.apt:
     name: brave-browser
     state: present
-  become: true
-  
+  tags:
+    - packages

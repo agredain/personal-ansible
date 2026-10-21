@@ -1,2 +1,6 @@
 ---
-# defaults file for main
+# defaults file for laptop
+
+# Usuario de escritorio para las tareas de scope de usuario (Starship, xxh, AppImageUpdate).
+# Por defecto, el usuario con el que se conecta Ansible.
+laptop_desktop_user: "{{ ansible_user }}"

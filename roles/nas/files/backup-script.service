@@ -2,4 +2,5 @@
 Description=General Backup Task
 
 [Service]
-ExecStart=/media/data/scripts/backup_general.sh
+Type=oneshot
+ExecStart=/media/data/scripts/backup_general.shss
