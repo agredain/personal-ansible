@@ -1,0 +1,76 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    # --- Core: package installed ---
+    - name: Check claude-desktop package status
+      command: dpkg-query -W -f='${Status}' claude-desktop
+      register: dpkg_result
+      changed_when: false
+
+    - name: Assert claude-desktop is installed
+      assert:
+        that:
+          - dpkg_result.rc == 0
+          - "'install ok installed' in dpkg_result.stdout"
+        fail_msg: "claude-desktop package is not installed"
+
+    # --- Core: apt repository registered ---
+    - name: Check apt repository file exists
+      stat:
+        path: /etc/apt/sources.list.d/claude-desktop.list
+      register: repo_file
+
+    - name: Read apt repository content
+      command: cat /etc/apt/sources.list.d/claude-desktop.list
+      register: repo_content
+      changed_when: false
+
+    - name: Assert apt repository is configured
+      assert:
+        that:
+          - repo_file.stat.exists
+          - "'downloads.claude.ai/claude-desktop/apt/stable' in repo_content.stdout"
+          - "'signed-by=/usr/share/keyrings/claude-desktop-archive-keyring.asc' in repo_content.stdout"
+        fail_msg: "apt repository is not correctly configured"
+
+    # --- Core: signing key present ---
+    - name: Check signing key exists
+      stat:
+        path: /usr/share/keyrings/claude-desktop-archive-keyring.asc
+      register: key_file
+
+    - name: Assert signing key exists
+      assert:
+        that:
+          - key_file.stat.exists
+        fail_msg: "signing key is missing"
+
+    # --- Cowork: kvm group + user membership ---
+    - name: Check kvm group and user membership
+      command: getent group kvm
+      register: kvm_group
+      changed_when: false
+      when: claude_cowork | default(false)
+
+    - name: Assert user is in kvm group
+      assert:
+        that:
+          - kvm_group.rc == 0
+          - "lookup('env','USER') in kvm_group.stdout"
+        fail_msg: "user is not in kvm group"
+      when: claude_cowork | default(false)
+
+    # --- Cowork: vhost_vsock module loaded on boot ---
+    - name: Check vhost_vsock module config exists
+      stat:
+        path: /etc/modules-load.d/vhost_vsock.conf
+      register: vsock_conf
+      when: claude_cowork | default(false)
+
+    - name: Assert vhost_vsock module config exists
+      assert:
+        that:
+          - vsock_conf.stat.exists
+        fail_msg: "vhost_vsock module config is missing"
+      when: claude_cowork | default(false)

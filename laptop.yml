@@ -6,6 +6,7 @@
   roles:
     - main
     - laptop
+    - claude
     - role: gantsign.visual-studio-code
       users:
         - username: "{{ lookup('env','USER') }}"
@@ -49,4 +50,3 @@
             - vscodevim.vim
             - yzhang.markdown-all-in-one
             #- vscoss.vscode-ansible
-            

@@ -1,0 +1,51 @@
+---
+# tasks file for claude
+# Installs Claude Desktop from Anthropic's official apt repository.
+# Docs: https://code.claude.com/docs/en/desktop-linux
+
+- name: Download Claude Desktop signing key
+  get_url:
+    url: https://downloads.claude.ai/claude-desktop/key.asc
+    dest: /usr/share/keyrings/claude-desktop-archive-keyring.asc
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Add Claude Desktop apt repository
+  apt_repository:
+    repo: deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/claude-desktop-archive-keyring.asc] https://downloads.claude.ai/claude-desktop/apt/stable stable main
+    filename: claude-desktop
+    state: present
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Claude Desktop
+  apt:
+    name: claude-desktop
+    state: present
+
+# --- Cowork (optional, requires KVM) ---
+
+- name: Ensure kvm group exists
+  group:
+    name: kvm
+    state: present
+  when: claude_cowork | default(false)
+
+- name: Add user to kvm group
+  user:
+    name: "{{ lookup('env','USER') }}"
+    groups: kvm
+    append: yes
+  when: claude_cowork | default(false)
+
+- name: Load vhost_vsock module on boot
+  copy:
+    content: "vhost_vsock\n"
+    dest: /etc/modules-load.d/vhost_vsock.conf
+    owner: root
+    group: root
+    mode: "0644"
+  when: claude_cowork | default(false)

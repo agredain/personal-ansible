@@ -1,0 +1,7 @@
+---
+# defaults file for claude
+
+# Enable Cowork configuration (kvm group + vhost_vsock module on boot).
+# Cowork runs Claude's agentic work in a QEMU/KVM virtual machine, so it
+# needs hardware virtualization. Leave false on hosts without KVM.
+claude_cowork: false

@@ -1,0 +1,21 @@
+dependency:
+  name: galaxy
+  enabled: false
+
+driver:
+  name: podman
+
+platforms:
+  - name: instance
+    image: ubuntu:24.04
+    pre_build_image: false
+
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        claude_cowork: true
+
+verifier:
+  name: ansible
