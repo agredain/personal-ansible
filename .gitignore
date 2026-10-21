@@ -1,2 +1,14 @@
-inventories/*
-ssh
+# Secretos: vault.yml está CIFRADO y se commitea; la clave vault NO.
+.vault_pass
+.vault_pass_ci
+
+# Claves SSH privadas (los .pub sí se commitean)
+ssh/*
+!ssh/*.pub
+
+# Cache de Galaxy y entorno virtual
+.ansible/
+.venv/
+
+# Ajustes personales de VS Code
+.vscode/
