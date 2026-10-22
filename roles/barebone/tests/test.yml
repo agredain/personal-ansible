@@ -1,6 +1,0 @@
----
-- name: Test barebone role
-  hosts: localhost
-  become: true
-  roles:
-    - barebone

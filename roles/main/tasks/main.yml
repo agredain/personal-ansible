@@ -17,7 +17,7 @@
       - bat # A cat(1) clone with syntax highlighting and Git integration.
       - ubuntu-restricted-extras
       - exfat-fuse
-      - exfatprogs  # exfat-utils fue eliminado de Ubuntu; exfatprogs es el reemplazo
+      - exfatprogs # exfat-utils fue eliminado de Ubuntu; exfatprogs es el reemplazo
       - rar
       - unrar
       - zip
