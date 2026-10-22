@@ -39,7 +39,7 @@
 
 - name: Add user to kvm group
   ansible.builtin.user:
-    name: "{{ ansible_user }}"
+    name: "{{ claude_desktop_user }}"
     groups: kvm
     append: true
   when: claude_cowork | default(false)

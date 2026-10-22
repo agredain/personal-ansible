@@ -20,6 +20,8 @@ provisioner:
     group_vars:
       all:
         claude_cowork: true
+        # Usuario que existe en el contenedor (root) para probar las tareas de Cowork.
+        claude_desktop_user: root
 
 verifier:
   name: ansible

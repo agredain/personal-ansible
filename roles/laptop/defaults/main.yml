@@ -2,5 +2,7 @@
 # defaults file for laptop
 
 # Usuario de escritorio para las tareas de scope de usuario (Starship, xxh, AppImageUpdate).
-# Por defecto, el usuario con el que se conecta Ansible.
-laptop_desktop_user: "{{ ansible_user }}"
+# Por defecto, el usuario que ejecuta el playbook. No se usa ansible_user porque
+# es una variable de conexión que no está definida si el play no fija remote_user
+# (laptop.yml no la fija).
+laptop_desktop_user: "{{ lookup('env', 'USER') }}"

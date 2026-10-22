@@ -5,3 +5,9 @@
 # Cowork runs Claude's agentic work in a QEMU/KVM virtual machine, so it
 # needs hardware virtualization. Leave false on hosts without KVM.
 claude_cowork: false
+
+# Usuario de escritorio que necesita acceso a /dev/kvm para Cowork.
+# Por defecto, el usuario que ejecuta el playbook. No se usa ansible_user
+# porque es una variable de conexión que no está definida en todos los
+# contextos (p. ej. el inventario que genera Molecule no la define).
+claude_desktop_user: "{{ lookup('env', 'USER') }}"
