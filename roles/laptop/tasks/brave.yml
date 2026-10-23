@@ -17,12 +17,6 @@
   tags:
     - repos
 
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: true
-  tags:
-    - repos
-
 - name: Install Brave
   ansible.builtin.apt:
     name: brave-browser

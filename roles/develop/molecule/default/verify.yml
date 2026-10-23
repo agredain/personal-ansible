@@ -1,0 +1,25 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check develop packages are installed
+      ansible.builtin.package_facts:
+
+    - name: Assert develop packages are present
+      ansible.builtin.assert:
+        that:
+          - "'zeal' in ansible_facts.packages"
+          - "'cppcheck' in ansible_facts.packages"
+          - "'docker.io' in ansible_facts.packages"
+        fail_msg: "one or more develop packages are missing"
+
+    - name: Check docker group membership
+      ansible.builtin.command: id -nG root
+      register: develop_groups
+      changed_when: false
+
+    - name: Assert user is in docker group
+      ansible.builtin.assert:
+        that:
+          - "'docker' in develop_groups.stdout.split()"
+        fail_msg: "user is not in the docker group"

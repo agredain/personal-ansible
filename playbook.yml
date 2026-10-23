@@ -1,6 +1,17 @@
-- name: Configure all hosts
-  hosts: all
+- name: Configure NAS
+  hosts: nas
   become: true
   roles:
     - main
     - server
+    - ssh
+    - nas
+    - dockstarter
+
+- name: Configure VPS
+  hosts: vps
+  become: true
+  roles:
+    - main
+    - server
+    - ssh

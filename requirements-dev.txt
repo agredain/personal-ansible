@@ -1,0 +1,6 @@
+# Herramientas de Ansible (versiones fijadas). Usado por install.sh y la CI.
+# Los módulos que no son ansible.builtin vienen de las colecciones de requirements.yml.
+ansible-core==2.21.5
+ansible-lint==26.9.0
+molecule==26.9.0
+molecule-plugins[docker]==26.9.28

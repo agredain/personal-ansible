@@ -4,29 +4,45 @@ Escritorio y aplicaciones del portátil.
 
 ## Qué hace
 
-- Añade PPAs: `atareao`, `y-ppa-manager`, `libreoffice`, `nextcloud-devs/client`,
-  `appimagelauncher`.
-- Instala paquetes KDE y utilidades (`latte-dock`, `gparted`, `vlc`, `nextcloud-client`,
-  `stacer`, `variety`, ...).
-- Instala snaps: `gitkraken`, `joplin-desktop`, `breaktimer`, `authy`, `auto-cpufreq`.
+- Añade PPAs: `libreoffice`, `nextcloud-devs/client`.
+- Instala paquetes KDE y utilidades (`gparted`, `vlc`, `nextcloud-desktop`,
+  `stacer`, `variety`, `pipx`, ...).
+- Instala snaps: `gitkraken`, `joplin-desktop`, `breaktimer`, `auto-cpufreq`.
 - Instala aplicaciones por archivo de tareas:
   - `brave.yml` — Brave (repositorio apt con keyring).
   - `enpass.yml` — Enpass (repositorio apt con keyring).
   - `typora.yml` — Typora (repositorio apt con keyring).
-  - `ferdi.yml` — Ferdi (deb de GitHub).
   - `httpi.yml` — HTTPie (AppImage en el home del usuario).
-  - `openlens.yml` — OpenLens (AppImage en el home del usuario).
   - `chezmoi.yml` — Chezmoi (deb + `chezmoi init`).
+  - `plasmoid.yml` — plasmoids de Plasma 6 (`kpackagetool6`), solo si
+    `laptop_plasmoids` no está vacío.
 - Herramientas de usuario (se ejecutan como `laptop_desktop_user`, no como root):
   - Starship (binario en `~/.local/bin`).
-  - xxh + plugins.
+  - xxh (vía `pipx`) + plugins.
   - AppImageUpdate.
 
 ## Variables
 
 | Variable | Por defecto | Descripción |
 |----------|-------------|-------------|
-| `laptop_desktop_user` | `{{ ansible_user }}` | Usuario de escritorio para las tareas de scope de usuario. |
+| `laptop_desktop_user` | `{{ lookup('env', 'USER') }}` | Usuario de escritorio para las tareas de scope de usuario. |
+| `laptop_desktop_home` | home de `getent passwd` | Home del usuario de escritorio (no usar `ansible_env.HOME`: los facts son de root). |
+| `laptop_starship_version` | `v1.23.0` | Versión de Starship. |
+| `laptop_plasmoids` | `[]` | Lista de `{file, id}`; `file` en `files/plasmoids/`, `id` el plugin id. |
+
+## Plasmoids
+
+Las URLs de descarga de store.kde.org/pling llevan tokens que caducan, así que
+los `.plasmoid` se descargan a mano (versión para Plasma 6), se guardan en
+`roles/laptop/files/plasmoids/` y se declaran en `laptop_plasmoids`:
+
+```yaml
+laptop_plasmoids:
+  - file: workrave-applet.plasmoid
+    id: org.workrave.applet
+```
+
+Solo se instalan los que no aparecen en `kpackagetool6 -t Plasma/Applet -l`.
 
 ## Uso
 

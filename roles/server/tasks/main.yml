@@ -6,7 +6,7 @@
     name:
       - cockpit
       - cockpit-networkmanager
-      - cockpit-systemd
+      - cockpit-system
     update_cache: true
   notify: Restart cockpit
   tags:
@@ -30,7 +30,6 @@
     regexp: 'Unattended-Upgrade::Mail\b'
     line: 'Unattended-Upgrade::Mail "{{ server_unattended_email }}";'
     state: present
-  notify: Restart unattended-upgrades
   tags:
     - config
 
@@ -40,7 +39,6 @@
     regexp: 'Unattended-Upgrade::MailReport\b'
     line: 'Unattended-Upgrade::MailReport "on-change";'
     state: present
-  notify: Restart unattended-upgrades
   tags:
     - config
 
@@ -50,7 +48,6 @@
     regexp: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages\b'
     line: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";'
     state: present
-  notify: Restart unattended-upgrades
   tags:
     - config
 
@@ -60,7 +57,6 @@
     regexp: 'Unattended-Upgrade::Remove-New-Unused-Dependencies\b'
     line: 'Unattended-Upgrade::Remove-New-Unused-Dependencies "true";'
     state: present
-  notify: Restart unattended-upgrades
   tags:
     - config
 
@@ -70,22 +66,20 @@
     regexp: 'Unattended-Upgrade::Remove-Unused-Dependencies\b'
     line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";'
     state: present
-  notify: Restart unattended-upgrades
   tags:
     - config
 
-- name: Config Unattended Cache
-  ansible.builtin.blockinfile:
-    path: /etc/apt/apt.conf.d/20auto-upgrades
-    block: |
+# Equivalente idempotente a `dpkg-reconfigure -plow unattended-upgrades`.
+- name: Enable Unattended Upgrades
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
       APT::Periodic::Download-Upgradeable-Packages "1";
       APT::Periodic::AutocleanInterval "7";
-  notify: Restart unattended-upgrades
-  tags:
-    - config
-
-- name: Enable Unattended Upgrades
-  ansible.builtin.command: dpkg-reconfigure -plow unattended-upgrades -f noninteractive
-  changed_when: false
+    owner: root
+    group: root
+    mode: "0644"
   tags:
     - config

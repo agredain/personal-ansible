@@ -2,7 +2,7 @@
 - name: Download Typora signing key
   ansible.builtin.get_url:
     url: https://typora.io/linux/public-key.asc
-    dest: /usr/share/keyrings/typora.gpg
+    dest: /usr/share/keyrings/typora.asc
     owner: root
     group: root
     mode: "0644"
@@ -11,7 +11,7 @@
 
 - name: Add Typora repository
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/typora.gpg] https://typora.io/linux ./"
+    repo: "deb [signed-by=/usr/share/keyrings/typora.asc] https://typora.io/linux ./"
     state: present
     filename: typora
   tags:

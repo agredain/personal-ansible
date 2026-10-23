@@ -1,2 +1,6 @@
 ---
 # defaults file for develop
+
+# Usuario que se añade al grupo docker (usar docker sin sudo).
+# Por defecto, el usuario que ejecuta el playbook.
+develop_docker_user: "{{ lookup('env', 'USER') }}"

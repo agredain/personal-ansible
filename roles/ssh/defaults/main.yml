@@ -1,2 +1,9 @@
 ---
 # defaults file for ssh
+
+# Despliega /etc/profile.d/login-notify.sh (aviso por Telegram en cada login SSH).
+# Requiere el notificador en ssh_telegram_notify_bin (solo existe en el NAS).
+ssh_login_notify: false
+
+# Script que envía el mensaje de Telegram.
+ssh_telegram_notify_bin: /media/data/scripts/telegram-notify

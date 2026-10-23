@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: develop
+      # El usuario del controlador no existe en el contenedor.
+      develop_docker_user: root

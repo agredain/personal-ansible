@@ -4,41 +4,51 @@
 # https://dev.to/uf4no/my-kubuntu-osx-look-alike-desktop-setup-219g
 # https://nerdfonts.com/
 
+# Resuelve el home del usuario de escritorio (ver laptop_desktop_home en defaults).
+- name: Get desktop user info
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ laptop_desktop_user }}"
+  tags:
+    - always
+
+- name: Create user directories
+  ansible.builtin.file:
+    path: "{{ laptop_desktop_home }}/{{ item }}"
+    state: directory
+    owner: "{{ laptop_desktop_user }}"
+    group: "{{ laptop_desktop_user }}"
+    mode: "0755"
+  loop:
+    - .local/bin
+    - Applications
+  tags:
+    - packages
+    - config
+
 # Other repositories
 - name: Extra Repositories
   ansible.builtin.apt_repository:
     repo: "{{ item }}"
     state: present
   loop:
-    - ppa:atareao/atareao # Touchpad-Indicator, Pomodoro Indicator, 2gi, My Weather Indicator. http://www.atareao.es/
-    - ppa:webupd8team/y-ppa-manager # y-ppa-manager, herramienta para gestionar los PPAs.
     - ppa:libreoffice/ppa # LibreOffice PPA
     - ppa:nextcloud-devs/client
-    - ppa:appimagelauncher-team/stable # Latest stable version of AppImageLauncher.
   tags:
     - repos
-
-- name: Add Microsoft Extra fonts to all apps
-  ansible.builtin.command: fc-cache -f
-  changed_when: false
-  tags:
-    - config
 
 # Extra packages
 - name: Install Extras Packages
   ansible.builtin.apt:
     name:
-      - appimagelauncher # Integrate AppImages to your application launcher with one click, and manage, update and remove them from there.
       - filelight # Ver el espacio ocupado por archivos y directorios de forma visual
       - gparted # Editor de particiones
       - hardinfo # Interfaz gráfica que muestra información del sistema, memoria, procesador, kernel, etc.
       - hplip
       - krename
-      - kde-config-systemd # Acelerar apagado systemd. https://www.muylinux.com/2016/08/01/acelerar-apagado-systemd/
-      - latte-dock # Dock para Plasma
       - libvlc5
       - meld
-      - nextcloud-client
+      - nextcloud-desktop
       - pdfmod # Editor PDF: reordenar, girar, quitar, añadir, combinar documentos.
       - picard # Análisis y reconocimiento de álbumes de música
       - pinta # Editor de imágenes
@@ -48,7 +58,7 @@
       - wakeonlan
       - vlc # Reproductor multimedia.
       - xbindkeys
-      - xserver-xorg-input-synaptics # Para hacer funcionar el Touchpad
+      - pipx # Instalador de aplicaciones Python aisladas (xxh).
   tags:
     - packages
 
@@ -58,7 +68,6 @@
       - gitkraken
       - joplin-desktop
       - breaktimer # Pomodoro application
-      - authy # strong authentication
       - auto-cpufreq # Automatic CPU speed & power optimizer for Linux
     classic: true
   tags:
@@ -79,18 +88,8 @@
   tags:
     - packages
 
-- name: Install Ferdi
-  ansible.builtin.include_tasks: ferdi.yml
-  tags:
-    - packages
-
 - name: Install Httpi Desktop
   ansible.builtin.include_tasks: httpi.yml
-  tags:
-    - packages
-
-- name: Install OpenLens Desktop
-  ansible.builtin.include_tasks: openlens.yml
   tags:
     - packages
 
@@ -99,12 +98,18 @@
   tags:
     - packages
 
+- name: Install Plasmoids
+  ansible.builtin.include_tasks: plasmoid.yml
+  when: laptop_plasmoids | length > 0
+  tags:
+    - config
+
 # --- Herramientas de usuario (se ejecutan como el usuario de escritorio, no como root) ---
 
 - name: Download Starship prompt
   ansible.builtin.get_url:
-    url: https://github.com/starship-rs/starship/releases/download/v1.23.0/starship-x86_64-unknown-linux-gnu.tar.gz
-    dest: /tmp/starship.tar.gz
+    url: "https://github.com/starship/starship/releases/download/{{ laptop_starship_version }}/starship-x86_64-unknown-linux-gnu.tar.gz"
+    dest: "/tmp/starship-{{ laptop_starship_version }}.tar.gz"
     mode: "0644"
   become: true
   become_user: "{{ laptop_desktop_user }}"
@@ -113,18 +118,18 @@
 
 - name: Extract Starship to user bin
   ansible.builtin.unarchive:
-    src: /tmp/starship.tar.gz
-    dest: "{{ ansible_env.HOME }}/.local/bin"
+    src: "/tmp/starship-{{ laptop_starship_version }}.tar.gz"
+    dest: "{{ laptop_desktop_home }}/.local/bin"
     remote_src: true
-    includes:
-      - starship-x86_64-unknown-linux-gnu/starship
+    include:
+      - starship
   become: true
   become_user: "{{ laptop_desktop_user }}"
   tags:
     - packages
 
 - name: Install xxh
-  ansible.builtin.pip:
+  community.general.pipx:
     name: xxh-xxh
     state: present
   become: true
@@ -133,12 +138,18 @@
     - packages
 
 - name: Install xxh plugins
-  ansible.builtin.command: "xxh +I {{ item }}"
+  ansible.builtin.command: "{{ laptop_desktop_home }}/.local/bin/xxh +I {{ item.source }}"
+  args:
+    creates: "{{ laptop_desktop_home }}/.xxh/.xxh/plugins/{{ item.name }}"
   loop:
-    - xxh-shell-bash
-    - xxh-plugin-prerun-dotfiles
-    - xxh-plugin-prerun-starship+git+https://github.com/izissise/xxh-plugin-prerun-starship.git
-  changed_when: false
+    - name: xxh-shell-bash
+      source: xxh-shell-bash
+    - name: xxh-plugin-prerun-dotfiles
+      source: xxh-plugin-prerun-dotfiles
+    - name: xxh-plugin-prerun-starship
+      source: xxh-plugin-prerun-starship+git+https://github.com/izissise/xxh-plugin-prerun-starship.git
+  loop_control:
+    label: "{{ item.name }}"
   become: true
   become_user: "{{ laptop_desktop_user }}"
   tags:
@@ -146,7 +157,7 @@
 
 - name: Configure xxh
   ansible.builtin.blockinfile:
-    path: "{{ ansible_env.HOME }}/.config/xxh/config.xxhc"
+    path: "{{ laptop_desktop_home }}/.config/xxh/config.xxhc"
     create: true
     mode: "0644"
     block: |
@@ -162,7 +173,7 @@
 - name: Download Appimage Update Tool
   ansible.builtin.get_url:
     url: https://github.com/AppImage/AppImageUpdate/releases/download/2.0.0-alpha-1-20220124/appimageupdatetool-x86_64.AppImage
-    dest: "{{ ansible_env.HOME }}/Applications/appimageupdatetool-x86_64.AppImage"
+    dest: "{{ laptop_desktop_home }}/Applications/appimageupdatetool-x86_64.AppImage"
     mode: "0755"
   become: true
   become_user: "{{ laptop_desktop_user }}"

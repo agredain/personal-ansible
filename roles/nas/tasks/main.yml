@@ -13,13 +13,8 @@
   tags:
     - services
 
-- name: Enable and start backup-script service
-  ansible.builtin.systemd:
-    name: backup-script
-    enabled: true
-    state: started
-  tags:
-    - services
+# Servicio oneshot sin [Install]: lo arranca la regla udev al conectar el disco
+# de backup, así que no se habilita ni se arranca aquí.
 
 - name: Add General Backup Udev Files
   ansible.builtin.template:
@@ -28,6 +23,7 @@
     owner: root
     group: root
     mode: "0644"
+  notify: Reload udev rules
   tags:
     - config
 

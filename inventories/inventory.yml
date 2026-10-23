@@ -1,16 +1,26 @@
 all:
-  hosts:
-    agrenas.local:
-      ansible_user: agredain
-      ansible_host: 192.168.1.128
-      dockstarted: true
-    oracle-cloud:
-      ansible_user: ubuntu
-      ansible_host: 129.151.224.149
-      ansible_ssh_private_key_file: ~/.ssh/ssh-key-2022-09-08.key
-      dockstarted: true
-    agredain-N14xWU:
-      ansible_user: agredain
-      ansible_host: 192.168.1.154
+  children:
+    # NAS doméstico: servidor + backup + DockStarter.
+    nas:
+      hosts:
+        agrenas.local:
+          ansible_user: agredain
+          ansible_host: 192.168.1.128
+          dockstarted: true
+          ssh_login_notify: true
+    # VPS en Oracle Cloud.
+    vps:
+      hosts:
+        oracle-cloud:
+          ansible_user: ubuntu
+          ansible_host: 129.151.224.149
+          ansible_ssh_private_key_file: ~/.ssh/ssh-key-2022-09-08.key
+          dockstarted: true
+    # Portátil: se provisiona en local con laptop.yml, no con playbook.yml.
+    laptops:
+      hosts:
+        agredain-N14xWU:
+          ansible_user: agredain
+          ansible_host: 192.168.1.154
   vars:
     dockstarted: false

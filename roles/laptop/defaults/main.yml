@@ -1,8 +1,22 @@
 ---
 # defaults file for laptop
 
-# Usuario de escritorio para las tareas de scope de usuario (Starship, xxh, AppImageUpdate).
+# Usuario de escritorio para las tareas de scope de usuario (Starship, xxh, AppImages...).
 # Por defecto, el usuario que ejecuta el playbook. No se usa ansible_user porque
 # es una variable de conexión que no está definida si el play no fija remote_user
 # (laptop.yml no la fija).
 laptop_desktop_user: "{{ lookup('env', 'USER') }}"
+
+# Home del usuario de escritorio. Se resuelve con getent al inicio del rol; no se
+# usa ansible_env.HOME porque los facts se recogen como root (become: true).
+laptop_desktop_home: "{{ getent_passwd[laptop_desktop_user][4] }}"
+
+# Versión de Starship (https://github.com/starship/starship/releases).
+laptop_starship_version: "v1.23.0"
+
+# Plasmoids de Plasma 6 a instalar. Cada `file` debe existir en
+# roles/laptop/files/plasmoids/ (se descargan a mano de store.kde.org, las URLs
+# de pling caducan). `id` es el plugin id que muestra `kpackagetool6 -l`.
+laptop_plasmoids: []
+# - file: workrave-applet.plasmoid
+#   id: org.workrave.applet

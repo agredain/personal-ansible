@@ -15,6 +15,7 @@ Instala Claude Desktop desde el repositorio apt oficial de Anthropic.
 | Variable | Por defecto | Descripción |
 |----------|-------------|-------------|
 | `claude_cowork` | `false` | Activa la configuración KVM para cowork. |
+| `claude_desktop_user` | `{{ lookup('env', 'USER') }}` | Usuario que se añade al grupo `kvm`. |
 
 ## Uso
 

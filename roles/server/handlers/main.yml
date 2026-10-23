@@ -1,12 +1,8 @@
 ---
 # handlers file for server
 
+# Cockpit se activa por socket; reiniciar el socket aplica la configuración.
 - name: Restart cockpit
   ansible.builtin.systemd:
-    name: cockpit
-    state: restarted
-
-- name: Restart unattended-upgrades
-  ansible.builtin.systemd:
-    name: unattended-upgrades
+    name: cockpit.socket
     state: restarted

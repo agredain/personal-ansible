@@ -4,10 +4,11 @@ Cableado de backup del NAS.
 
 ## Qué hace
 
-- Despliega `backup-script.service` a `/etc/systemd/system/` (con `[Install]`)
-  y lo habilita/inicia. Handler de `daemon-reload`.
+- Despliega `backup-script.service` (oneshot, sin `[Install]`) a
+  `/etc/systemd/system/`. Handler de `daemon-reload`. No se habilita ni se
+  arranca: lo lanza la regla udev al conectar el disco de backup.
 - Genera la regla udev `90-mount_media_backup.rules` desde plantilla
-  (usa `nas_backup_disk_uuid`).
+  (usa `nas_backup_disk_uuid`). Handler de `udevadm control --reload-rules`.
 - Añade un cron diario que ejecuta `/media/data/scripts/clean_photos.sh`.
 
 ## Variables
@@ -22,5 +23,10 @@ Cableado de backup del NAS.
 roles:
   - nas
 ```
+
+## Tests
+
+Escenario Molecule (`molecule/default/`) que verifica la unidad, la regla udev
+y el cron.
 
 Tags: `services`, `config`.

@@ -1,0 +1,35 @@
+# Plasmoids de Plasma 6 (archivos .plasmoid versionados en files/plasmoids/).
+# Las URLs de descarga de pling/store.kde.org llevan tokens que caducan, así que
+# los archivos se descargan a mano y se declaran en `laptop_plasmoids`.
+- name: Copy plasmoid packages
+  ansible.builtin.copy:
+    src: "plasmoids/{{ item.file }}"
+    dest: "/tmp/{{ item.file }}"
+    owner: "{{ laptop_desktop_user }}"
+    mode: "0644"
+  loop: "{{ laptop_plasmoids }}"
+  loop_control:
+    label: "{{ item.id }}"
+  tags:
+    - config
+
+- name: List installed plasmoids
+  ansible.builtin.command: kpackagetool6 -t Plasma/Applet -l
+  register: laptop_installed_plasmoids
+  changed_when: false
+  become: true
+  become_user: "{{ laptop_desktop_user }}"
+  tags:
+    - config
+
+- name: Install plasmoids
+  ansible.builtin.command: "kpackagetool6 -t Plasma/Applet -i /tmp/{{ item.file }}"
+  loop: "{{ laptop_plasmoids }}"
+  loop_control:
+    label: "{{ item.id }}"
+  when: item.id not in (laptop_installed_plasmoids.stdout_lines | map('trim') | list)
+  changed_when: true
+  become: true
+  become_user: "{{ laptop_desktop_user }}"
+  tags:
+    - config

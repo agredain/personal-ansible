@@ -18,7 +18,7 @@
 - name: Install Httpi
   ansible.builtin.get_url:
     url: "https://github.com/httpie/desktop/releases/download/{{ laptop_httpi_latest }}/HTTPie-{{ laptop_httpi_latest }}.AppImage"
-    dest: "{{ ansible_env.HOME }}/Applications/HTTPie.AppImage"
+    dest: "{{ laptop_desktop_home }}/Applications/HTTPie.AppImage"
     mode: "0755"
   become: true
   become_user: "{{ laptop_desktop_user }}"

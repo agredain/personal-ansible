@@ -5,6 +5,13 @@ roles:
   - name: geerlingguy.nfs
     version: 2.1.1
 
-# Colecciones necesarias (módulos snap, apt, etc.).
+# Colecciones necesarias (versiones fijadas).
 collections:
+  # Módulos snap, pipx, etc.
   - name: community.general
+    version: 13.5.0
+  # Driver docker de Molecule (docker_container + synchronize).
+  - name: community.docker
+    version: 5.4.0
+  - name: ansible.posix
+    version: 2.2.2

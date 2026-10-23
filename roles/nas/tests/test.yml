@@ -1,6 +1,0 @@
----
-- name: Test nas role
-  hosts: localhost
-  become: true
-  roles:
-    - nas

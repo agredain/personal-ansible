@@ -4,12 +4,14 @@
 # Docs: https://code.claude.com/docs/en/desktop-linux
 
 - name: Download Claude Desktop signing key
-  get_url:
+  ansible.builtin.get_url:
     url: https://downloads.claude.ai/claude-desktop/key.asc
     dest: /usr/share/keyrings/claude-desktop-archive-keyring.asc
     owner: root
     group: root
     mode: "0644"
+  tags:
+    - repos
 
 - name: Add Claude Desktop apt repository
   ansible.builtin.apt_repository:
@@ -19,23 +21,25 @@
       https://downloads.claude.ai/claude-desktop/apt/stable stable main
     filename: claude-desktop
     state: present
-
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: true
+  tags:
+    - repos
 
 - name: Install Claude Desktop
-  apt:
+  ansible.builtin.apt:
     name: claude-desktop
     state: present
+  tags:
+    - packages
 
 # --- Cowork (optional, requires KVM) ---
 
 - name: Ensure kvm group exists
-  group:
+  ansible.builtin.group:
     name: kvm
     state: present
   when: claude_cowork | default(false)
+  tags:
+    - config
 
 - name: Add user to kvm group
   ansible.builtin.user:
@@ -43,12 +47,16 @@
     groups: kvm
     append: true
   when: claude_cowork | default(false)
+  tags:
+    - config
 
 - name: Load vhost_vsock module on boot
-  copy:
+  ansible.builtin.copy:
     content: "vhost_vsock\n"
     dest: /etc/modules-load.d/vhost_vsock.conf
     owner: root
     group: root
     mode: "0644"
   when: claude_cowork | default(false)
+  tags:
+    - config

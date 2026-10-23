@@ -1,23 +1,44 @@
 ---
 # tasks file for ssh
 
+# `sshd -t` necesita el directorio de separación de privilegios.
+- name: Ensure sshd privilege separation directory exists
+  ansible.builtin.file:
+    path: /run/sshd
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags:
+    - config
+
 - name: Disable root login
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '^#?PermitRootLogin'
     line: 'PermitRootLogin no'
     state: present
+    validate: /usr/sbin/sshd -t -f %s
   notify: Reload SSH
   tags:
     - config
 
 # https://dev.to/bogkonstantin/send-message-to-telegram-on-any-ssh-login-24c8
 - name: Add Telegram notification of new login
-  ansible.builtin.copy:
-    src: login-notify.sh
+  ansible.builtin.template:
+    src: login-notify.sh.j2
     dest: /etc/profile.d/login-notify.sh
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+  when: ssh_login_notify | bool
+  tags:
+    - config
+
+- name: Remove Telegram notification of new login
+  ansible.builtin.file:
+    path: /etc/profile.d/login-notify.sh
+    state: absent
+  when: not (ssh_login_notify | bool)
   tags:
     - config

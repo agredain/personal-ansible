@@ -2,7 +2,7 @@
 - name: Download Enpass signing key
   ansible.builtin.get_url:
     url: https://dl.sinew.in/keys/enpass-linux.key
-    dest: /usr/share/keyrings/enpass-linux.gpg
+    dest: /usr/share/keyrings/enpass-linux.asc
     owner: root
     group: root
     mode: "0644"
@@ -11,7 +11,7 @@
 
 - name: Add Enpass repository
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/enpass-linux.gpg] http://repo.sinew.in/ stable main"
+    repo: "deb [signed-by=/usr/share/keyrings/enpass-linux.asc] http://repo.sinew.in/ stable main"
     state: present
     filename: enpass
   tags:

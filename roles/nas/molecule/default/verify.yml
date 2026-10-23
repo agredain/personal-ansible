@@ -1,0 +1,37 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Read backup service unit
+      ansible.builtin.command: cat /etc/systemd/system/backup-script.service
+      register: nas_unit
+      changed_when: false
+
+    - name: Assert backup service runs the backup script
+      ansible.builtin.assert:
+        that:
+          - "'ExecStart=/media/data/scripts/backup_general.sh' in nas_unit.stdout_lines"
+        fail_msg: "backup-script.service has a wrong ExecStart"
+
+    - name: Read udev rule
+      ansible.builtin.command: cat /etc/udev/rules.d/90-mount_media_backup.rules
+      register: nas_udev
+      changed_when: false
+
+    - name: Assert udev rule matches the backup disk
+      ansible.builtin.assert:
+        that:
+          - "'fd8ae7f1-d928-4732-a4ea-4910c62c1b5f' in nas_udev.stdout"
+          - "'backup-script.service' in nas_udev.stdout"
+        fail_msg: "udev rule is not correctly configured"
+
+    - name: Read root crontab
+      ansible.builtin.command: crontab -l
+      register: nas_cron
+      changed_when: false
+
+    - name: Assert photo-clean cron job exists
+      ansible.builtin.assert:
+        that:
+          - "'/media/data/scripts/clean_photos.sh' in nas_cron.stdout"
+        fail_msg: "photo-clean cron job is missing"

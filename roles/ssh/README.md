@@ -6,12 +6,17 @@ Hardening SSH y notificación de login.
 
 - Desactiva el login de root en `/etc/ssh/sshd_config` (`PermitRootLogin no`).
   Handler de `Reload SSH`.
-- Despliega `login-notify.sh` a `/etc/profile.d/` que envía un mensaje de
-  Telegram en cada login (depende de `/media/data/scripts/telegram-notify`).
+- Valida `sshd_config` con `sshd -t` antes de escribirlo.
+- Si `ssh_login_notify: true`, despliega `login-notify.sh` (plantilla) a
+  `/etc/profile.d/`, que envía un mensaje de Telegram en cada login SSH. Si el
+  notificador no existe, el script no hace nada. Con `false` lo elimina.
 
 ## Variables
 
-No define variables.
+| Variable | Por defecto | Descripción |
+|----------|-------------|-------------|
+| `ssh_login_notify` | `false` | Despliega la notificación de login (en el inventario: `true` en el NAS). |
+| `ssh_telegram_notify_bin` | `/media/data/scripts/telegram-notify` | Script que envía el mensaje de Telegram. |
 
 ## Uso
 

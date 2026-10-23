@@ -4,6 +4,8 @@
 - name: Install Zeal
   ansible.builtin.apt:
     name: zeal
+    update_cache: true
+    cache_valid_time: 3600
   tags:
     - packages
 
@@ -18,6 +20,14 @@
     name: docker.io
   tags:
     - packages
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: "{{ develop_docker_user }}"
+    groups: docker
+    append: true
+  tags:
+    - config
 
 - name: Prune docker images weekly
   ansible.builtin.cron:

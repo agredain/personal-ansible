@@ -4,15 +4,15 @@ Hardening de servidor headless.
 
 ## Qué hace
 
-- Instala **Cockpit** (`cockpit`, `cockpit-networkmanager`, `cockpit-systemd`).
+- Instala **Cockpit** (`cockpit`, `cockpit-networkmanager`, `cockpit-system`).
 - Instala **BorgBackup**.
 - Instala y configura **unattended-upgrades**:
   - Email de notificación (`server_unattended_email`).
   - `MailReport "on-change"`.
   - Limpieza de kernels y dependencias no usados.
-  - `APT::Periodic` en `/etc/apt/apt.conf.d/20auto-upgrades`.
-  - `dpkg-reconfigure -plow unattended-upgrades -f noninteractive`.
-- Handlers: reinicia `cockpit` y `unattended-upgrades` al cambiar la config.
+  - `/etc/apt/apt.conf.d/20auto-upgrades` con `APT::Periodic` (activa las
+    actualizaciones automáticas; equivale a `dpkg-reconfigure -plow unattended-upgrades`).
+- Handler: reinicia `cockpit.socket` al instalar Cockpit.
 
 ## Variables
 

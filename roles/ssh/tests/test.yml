@@ -1,6 +1,0 @@
----
-- name: Test ssh role
-  hosts: localhost
-  become: true
-  roles:
-    - ssh

@@ -1,6 +1,0 @@
----
-- name: Test dockstarter role
-  hosts: localhost
-  become: true
-  roles:
-    - dockstarter

@@ -3,11 +3,13 @@ dependency:
   enabled: false
 
 driver:
-  name: podman
+  name: docker
 
 platforms:
   - name: instance
     image: ubuntu:24.04
+    # El driver docker busca Dockerfile.j2 por defecto; el nuestro se llama Dockerfile.
+    dockerfile: Dockerfile
     pre_build_image: false
 
 provisioner:
@@ -16,6 +18,8 @@ provisioner:
   # que molecule crea en create/ (syntax corre antes de create/).
   env:
     ANSIBLE_ROLES_PATH: ../../..
+    # Colecciones del repo (community.docker para el driver, community.general...).
+    ANSIBLE_COLLECTIONS_PATH: ../../../../.ansible/collections
   inventory:
     group_vars:
       all:

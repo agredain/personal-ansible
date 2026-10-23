@@ -15,9 +15,9 @@ fi
 # shellcheck disable=SC1091
 source "${VENV_DIR}/bin/activate"
 
-echo ">> Actualizando pip e instalando Ansible"
+echo ">> Actualizando pip e instalando Ansible (requirements-dev.txt)"
 pip install --upgrade pip
-pip install ansible
+pip install -r requirements-dev.txt
 
 echo ">> Instalando roles de requirements.yml"
 # -p .ansible/roles: instala en el repo (gitignored), no en roles/ ni en ~/.ansible/roles

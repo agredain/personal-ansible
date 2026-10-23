@@ -1,6 +1,0 @@
----
-- name: Test main role
-  hosts: localhost
-  become: true
-  roles:
-    - main

@@ -11,9 +11,10 @@
 
 - name: Gather Chezmoi url
   ansible.builtin.set_fact:
-    laptop_chezmoi_url: "{{ laptop_chezmoi.json | to_json | from_json | json_query(url_query) | first }}"
-  vars:
-    url_query: "assets[?contains(browser_download_url,'amd64.deb')].browser_download_url"
+    laptop_chezmoi_url: >-
+      {{ laptop_chezmoi.json.assets
+         | selectattr('browser_download_url', 'search', 'amd64\\.deb$')
+         | map(attribute='browser_download_url') | first }}
   tags:
     - packages
 
@@ -27,7 +28,7 @@
 - name: Init Chezmoi
   ansible.builtin.command: chezmoi init https://github.com/agredain/dotfiles.git
   args:
-    creates: "{{ ansible_env.HOME }}/.local/share/chezmoi"
+    creates: "{{ laptop_desktop_home }}/.local/share/chezmoi"
   become: true
   become_user: "{{ laptop_desktop_user }}"
   tags:

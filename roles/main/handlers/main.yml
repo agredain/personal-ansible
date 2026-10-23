@@ -1,2 +1,7 @@
 ---
 # handlers file for main
+
+# Registra las fuentes de Microsoft que instala ubuntu-restricted-extras.
+- name: Refresh font cache
+  ansible.builtin.command: fc-cache -f
+  changed_when: true

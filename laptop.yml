@@ -5,6 +5,7 @@
   roles:
     - main
     - laptop
+    - develop
     - claude
     - role: gantsign.visual-studio-code
       users: "{{ visual_studio_code_users }}"

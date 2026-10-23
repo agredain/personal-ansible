@@ -6,6 +6,5 @@
   become: true
   args:
     creates: /usr/local/bin/ds
-  changed_when: false
   tags:
     - packages

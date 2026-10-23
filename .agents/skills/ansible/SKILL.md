@@ -23,15 +23,15 @@ Antes de proponer cambios, respeta las convenciones existentes del repositorio:
 
 - **Idioma**: comentarios y nombres de tareas en **español** (o inglés técnico); el código YAML sigue la sintaxis estándar.
 - **Entorno**: Ansible vive en un **venv local** (`.venv/`) creado por `install.sh`. Actívalo con `source .venv/bin/activate`.
-- **Inventario**: `inventories/` contiene `inventory.yml` (sin secretos, se commitea) y `vault.yml` (secretos **cifrados** con Vault, se commitea cifrado). Ansible fusiona ambos automáticamente (ver `inventory = inventories/` en `ansible.cfg`).
+- **Inventario**: grupos `nas`, `vps`, `laptops`. `inventories/` contiene `inventory.yml` (sin secretos, se commitea) y `vault.yml` (secretos **cifrados** con Vault, se commitea cifrado). Ansible fusiona ambos automáticamente (ver `inventory = inventories/` en `ansible.cfg`).
 - **Clave Vault**: en `~/.vault_pass` (gitignored), inyectada con `ANSIBLE_VAULT_PASSWORD_FILE` (`upgrade.sh` ya lo exporta; `ansible.cfg` NO fija `vault_password_file` porque el path es específico de la máquina). Para editar secretos: `ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass ansible-vault edit inventories/vault.yml`.
 - **Roles**: en `roles/` (locales) + roles de Galaxy en `requirements.yml` (versiones **fijadas** para reproducibilidad).
 - **Playbooks principales**:
-  - `playbook.yml` → hosts remotos (roles `main` + `server`).
-  - `laptop.yml` → portátil local (`hosts: 127.0.0.1`, `connection: local`, roles `main`, `laptop`, `claude`, `gantsign.visual-studio-code`).
-  - `playbook-upgrade.yml` → upgrade de paquetes + DockStarter (ejecutado por `upgrade.sh`).
-- **CI** (`.github/workflows/ci.yml`): `ansible-lint` + `--syntax-check` + `molecule test` (matrix de roles: `claude`, `main`, `ssh`, `server`) con Podman.
-- **`ansible.cfg`**: `inventory = inventories/`, `roles_path = roles:.ansible/roles:~/.ansible/roles`, `collections_path = .ansible/collections:~/.ansible/collections`, `pipelining = True`, `timeout = 30`. Roles y colecciones de Galaxy se instalan en `.ansible/` (gitignored) vía `install.sh`.
+  - `playbook.yml` → hosts remotos, un play por grupo del inventario: `nas` (`main`, `server`, `ssh`, `nas`, `dockstarter`) y `vps` (`main`, `server`, `ssh`).
+  - `laptop.yml` → portátil local (`hosts: 127.0.0.1`, `connection: local`, roles `main`, `laptop`, `develop`, `claude`, `gantsign.visual-studio-code`).
+  - `playbook-upgrade.yml` → upgrade de paquetes de todos los hosts + DockStarter (ejecutado por `upgrade.sh`).
+- **CI** (`.github/workflows/ci.yml`): `ansible-lint` + `--syntax-check` + `molecule test` (matrix de roles: `claude`, `main`, `ssh`, `server`, `nas`, `develop`) con Docker.
+- **`ansible.cfg`**: `inventory = inventories/`, `roles_path = roles:.ansible/roles:~/.ansible/roles`, `collections_path = .ansible/collections:~/.ansible/collections`, `pipelining = True`, `timeout = 30`. Roles y colecciones de Galaxy se instalan en `.ansible/` (gitignored) vía `install.sh`; las herramientas (ansible-core, ansible-lint, molecule) están fijadas en `requirements-dev.txt`.
 - **Nota importante**: el directorio de trabajo debe tener permisos `755` (no world-writable), de lo contrario Ansible **ignora** `ansible.cfg`.
 
 ## Principios fundamentales
@@ -338,7 +338,7 @@ all:
 | Vault: `Attempting to use 'vault' secret but no vault passwords have been set` | Falta `vault_password_file` o `ANSIBLE_VAULT_PASSWORD_FILE`. |
 | `ansible.cfg` no se aplica | El directorio de trabajo es world-writable (debe ser `755`). |
 | Secretos en el log | Añade `no_log: true` a la tarea. |
-| Molecule falla en CI | `BUILDAH_ISOLATION=chroot` (ya en el CI), Podman instalado, imagen disponible. |
+| Molecule falla en CI | Docker disponible, imagen disponible; para systemd: `privileged`, `cgroupns_mode: host`. |
 
 ## Linting con ansible-lint
 
@@ -366,7 +366,7 @@ all:
 
 ## Testing con Molecule
 
-- Molecule prueba roles en contornos aislados (Docker/Podman).
+- Molecule prueba roles en contornos aislados (Docker).
 - Estructura: `roles/<rol>/molecule/<escenario>/` con `molecule.yml`, `converge.yml`, `verify.yml`, `prepare.yml`.
 - Comandos:
   - `molecule list` — lista escenarios.
@@ -374,7 +374,7 @@ all:
   - `molecule verify` — ejecuta asserts (con `assert` o `pytest`).
   - `molecule test` — ciclo completo (create → converge → verify → destroy).
   - `molecule cleanup` / `molecule destroy` — limpia contenedores.
-- En este proyecto: `molecule test` corre en CI con **Podman** y `BUILDAH_ISOLATION=chroot` para los roles `claude`, `main`, `ssh`, `server`.
+- En este proyecto: `molecule test` corre en CI con el driver **Docker** para los roles `claude`, `main`, `ssh`, `server`, `nas`, `develop`.
 - **`verify.yml`** típico:
   ```yaml
   - name: Verificar estado
@@ -411,14 +411,12 @@ jobs:
   molecule:
     runs-on: ubuntu-latest
     strategy:
-      matrix: { role: [claude, main, ssh, server] }
+      matrix: { role: [claude, main, ssh, server, nas, develop] }
     steps:
       - uses: actions/checkout@v4
-      - run: pip install ansible molecule molecule-plugins[docker]
-      - run: sudo apt-get install -y podman
+      - run: pip install -r requirements-dev.txt
       - run: ansible-galaxy install -r requirements.yml
       - working-directory: roles/${{ matrix.role }}
-        env: { BUILDAH_ISOLATION: chroot }
         run: molecule test
 ```
 

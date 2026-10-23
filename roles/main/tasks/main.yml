@@ -10,6 +10,17 @@
   tags:
     - upgrade
 
+# ubuntu-restricted-extras instala ttf-mscorefonts-installer, que pide aceptar
+# la EULA; sin esto la instalación no interactiva puede quedarse colgada.
+- name: Accept Microsoft core fonts EULA
+  ansible.builtin.debconf:
+    name: ttf-mscorefonts-installer
+    question: msttcorefonts/accepted-mscorefonts-eula
+    value: "true"
+    vtype: select
+  tags:
+    - packages
+
 # Extra packages
 - name: Install Extras Packages
   ansible.builtin.apt:
@@ -23,10 +34,7 @@
       - zip
       - unzip
       - curl
-      - neofetch # ASCII logo de la distro + información del sistema en terminal.
       - lm-sensors # Sensores de temperatura, voltaje y ventiladores.
-      - intel-microcode # Microcódigo en procesadores Intel (reemplaza microcode.ctl).
-      - amd64-microcode # Microcódigo en procesadores AMD (reemplaza microcode.ctl).
       - rmlint # Elimina archivos duplicados por hash.
       - preload # Acelera la carga de aplicaciones.
       - git
@@ -34,5 +42,21 @@
       - ncdu # Estadísticas de carpetas en terminal.
       - most # Manpages a color.
       - bleachbit # Elimina archivos innecesarios del sistema.
+  notify: Refresh font cache
+  tags:
+    - packages
+
+# Microcódigo solo para la CPU del host (no existe en ARM, p. ej. Oracle Ampere).
+- name: Install Intel microcode
+  ansible.builtin.apt:
+    name: intel-microcode
+  when: ansible_processor | select('search', 'GenuineIntel') | list | length > 0
+  tags:
+    - packages
+
+- name: Install AMD microcode
+  ansible.builtin.apt:
+    name: amd64-microcode
+  when: ansible_processor | select('search', 'AuthenticAMD') | list | length > 0
   tags:
     - packages

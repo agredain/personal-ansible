@@ -21,7 +21,7 @@ jobs:
       - name: Install Ansible and ansible-lint
         run: |
           python -m pip install --upgrade pip
-          pip install ansible ansible-lint
+          pip install -r requirements-dev.txt
 
       - name: Install Galaxy dependencies
         run: |
@@ -57,7 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        role: [claude, main, ssh, server]
+        role: [claude, main, ssh, server, nas, develop]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,12 +67,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Ansible, Molecule and Podman
+      # Docker ya viene instalado en los runners ubuntu-latest.
+      - name: Install Ansible and Molecule
         run: |
           python -m pip install --upgrade pip
-          pip install ansible molecule molecule-plugins[docker]
-          sudo apt-get update
-          sudo apt-get install -y podman
+          pip install -r requirements-dev.txt
 
       - name: Install Galaxy dependencies
         run: |
@@ -81,10 +80,4 @@ jobs:
 
       - name: Run Molecule
         working-directory: roles/${{ matrix.role }}
-        env:
-          BUILDAH_ISOLATION: chroot
-          # molecule-podman usa `when: (lookup('env', 'HOME'))` (string como
-          # booleano), incompatible con ansible-core >= 2.19. Se permite
-          # temporalmente hasta que molecule lo corrija.
-          ANSIBLE_ALLOW_BROKEN_CONDITIONALS: "1"
         run: molecule test
