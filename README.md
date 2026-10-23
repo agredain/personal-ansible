@@ -141,7 +141,7 @@ molecule test
 
 ### CI
 
-El workflow `.github/workflows/ci.yml` ejecuta en cada push/PR:
+El workflow `.github/workflows/ci.yml` ejecuta en cada push (a cualquier rama) y en cada PR:
 
 1. **lint** — `ansible-lint` + `ansible-playbook --syntax-check` de los 3 playbooks.
 2. **molecule** — `molecule test` (incluye el paso de idempotencia) para `claude`,

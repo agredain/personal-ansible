@@ -1,8 +1,9 @@
 name: CI
 
 on:
+  # Cualquier push a cualquier rama (incluida master).
   push:
-    branches: [master]
+    branches: ["**"]
   pull_request:
 
 jobs:
